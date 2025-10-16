@@ -1,0 +1,105 @@
+{
+    "dashboard_props": {
+        "repoName": "thecode.report",
+        "branch": "main",
+        "status": "Ready",
+        "totals": {
+            "lines": 78.6,
+            "branches": 65.2,
+            "methods": 66.6,
+            "fullMethods": 50.0,
+            "counts": {
+                "lines": {
+                    "covered": 75,
+                    "uncovered": 33,
+                    "coverable": 108,
+                    "total": 260
+                },
+                "branches": {
+                    "covered": 4,
+                    "total": 8
+                },
+                "methods": {
+                    "covered": 16,
+                    "fullCovered": 12,
+                    "total": 24
+                }
+            }
+        },
+        "commit": {
+            "sha": "a1b2c3d",
+            "short": "a1b2c3d",
+            "message": "Initial wiring of TCR dashboard shell",
+            "author": "Ashesh Nepal",
+            "timestamp": "2025-10-14T16:05:00Z"
+        },
+        "diff": {
+            "base": "HEAD~1",
+            "coverage": 92.4,
+            "filesChanged": 7,
+            "failedThreshold": false
+        },
+        "thresholds": {
+            "total": 80,
+            "diff": 90
+        },
+        "summary": {
+            "parser": "OpenCover",
+            "assemblies": 1,
+            "classes": 4,
+            "files": 5,
+            "generatedBy": "TCR 0.1.0",
+            "generatedAt": "2025-10-15T20:24:55Z"
+        },
+        "trend": [
+            72.1,
+            74.0,
+            75.8,
+            74.9,
+            77.3,
+            78.6
+        ],
+        "topUncovered": [
+            {
+                "path": "src/Utils/DateParser.cs",
+                "lines": [
+                    42,
+                    43,
+                    44,
+                    67
+                ]
+            },
+            {
+                "path": "src/Services/ReportService.cs",
+                "lines": [
+                    118,
+                    121,
+                    122
+                ]
+            },
+            {
+                "path": "tests/Helpers/Seed.cs",
+                "lines": [
+                    23,
+                    24
+                ]
+            }
+        ],
+        "hotspots": [
+            {
+                "file": "src/Utils/DateParser.cs",
+                "function": "Parse()",
+                "reason": "low-cov",
+                "score": 72,
+                "lines": "42-44,67"
+            },
+            {
+                "file": "src/Services/ReportService.cs",
+                "function": "Generate()",
+                "reason": "complexity",
+                "score": 61,
+                "lines": "118,121-122"
+            }
+        ]
+    }
+}

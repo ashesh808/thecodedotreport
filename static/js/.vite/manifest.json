@@ -1,0 +1,17 @@
+{
+  "src/ts/app.ts": {
+    "file": "assets/app-BfGWCRDT.js",
+    "name": "app",
+    "src": "src/ts/app.ts",
+    "isEntry": true,
+    "dynamicImports": [
+      "src/ts/pages/dashboard.ts"
+    ]
+  },
+  "src/ts/pages/dashboard.ts": {
+    "file": "assets/dashboard-iZ33wglB.js",
+    "name": "dashboard",
+    "src": "src/ts/pages/dashboard.ts",
+    "isDynamicEntry": true
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "devDependencies": {
+    "@tailwindcss/cli": "^4.1.12",
+    "@tailwindcss/typography": "^0.5.19",
+    "@types/node": "^24.3.0",
+    "@types/react": "^19.2.2",
+    "@types/react-dom": "^19.2.2",
+    "@vitejs/plugin-react": "^5.0.4",
+    "concurrently": "^8.2.2",
+    "daisyui": "^5.3.2",
+    "tailwindcss": "^4.1.14",
+    "typescript": "^5.9.2",
+    "vite": "^7.1.7"
+  },
+  "scripts": {
+    "dev:css": "npx @tailwindcss/cli -i src/css/app.css -o static/css/output.css -w",
+    "dev:js": "vite build --watch",
+    "dev:server": "z8 run dev",
+    "dev": "concurrently -n css,js,server -c green,blue,magenta \"npm:dev:css\" \"npm:dev:js\" \"npm:dev:server\"",
+    "typecheck": "tsc -w",
+    "build:css": "npx @tailwindcss/cli -i src/css/app.css -o static/css/output.css",
+    "build:js": "vite build",
+    "build": "npm run build:css && npm run build:js"
+  },
+  "dependencies": {
+    "react": "^19.2.0",
+    "react-dom": "^19.2.0"
+  }
+}
