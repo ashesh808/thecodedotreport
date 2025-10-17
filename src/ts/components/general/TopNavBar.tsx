@@ -3,6 +3,49 @@ import React from "react";
 const TABS = ["overview", "coverage"] as const;
 type Tab = typeof TABS[number];
 
+const TAB_META: Record<Tab, {
+  label: string;
+  description: string;
+  icon: (active: boolean) => JSX.Element;
+}> = {
+  overview: {
+    label: "Overview",
+    description: "Snapshot & trends",
+    icon: (active) => (
+      <svg
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        aria-hidden
+        className={active ? "text-primary" : "text-base-content/60"}
+      >
+        <path
+          fill="currentColor"
+          d="M4 9h4v11H4zm6-6h4v17h-4zm6 11h4v6h-4z"
+        />
+      </svg>
+    ),
+  },
+  coverage: {
+    label: "Coverage Explorer",
+    description: "Deep dive metrics",
+    icon: (active) => (
+      <svg
+        width="18"
+        height="18"
+        viewBox="0 0 24 24"
+        aria-hidden
+        className={active ? "text-primary" : "text-base-content/60"}
+      >
+        <path
+          fill="currentColor"
+          d="M12 2l9 4v6c0 5.25-3.22 10.42-9 12c-5.78-1.58-9-6.75-9-12V6l9-4zm0 3.18L6 7.09v4.42c0 4.06 2.62 8.34 6 9.85c3.38-1.51 6-5.79 6-9.85V7.09l-6-1.91zm-1 10.82l-3.59-3.58L8.83 11L11 13.17l4.59-4.58L17 10l-6 6z"
+        />
+      </svg>
+    ),
+  },
+};
+
 export function useHashTab(defaultTab: Tab = "overview"): [Tab, (t: Tab) => void] {
   const get = () => {
     const raw = window.location.hash.replace(/^#\//, "") as Tab;
@@ -32,8 +75,10 @@ export function TopNavBar() {
     const elRect = el.getBoundingClientRect();
     const cRect = container.getBoundingClientRect();
     const left = elRect.left - cRect.left + container.scrollLeft;
-    slider.style.transform = `translateX(${left}px)`;
+    const top = elRect.top - cRect.top + container.scrollTop;
+    slider.style.transform = `translate3d(${left}px, ${top}px, 0)`;
     slider.style.width = `${elRect.width}px`;
+    slider.style.height = `${elRect.height}px`;
     const padding = 24;
     const visibleStart = container.scrollLeft;
     const visibleEnd = visibleStart + container.clientWidth;
@@ -54,8 +99,10 @@ export function TopNavBar() {
       const elRect = el.getBoundingClientRect();
       const cRect = container.getBoundingClientRect();
       const left = elRect.left - cRect.left + container.scrollLeft;
-      slider.style.transform = `translateX(${left}px)`;
+      const top = elRect.top - cRect.top + container.scrollTop;
+      slider.style.transform = `translate3d(${left}px, ${top}px, 0)`;
       slider.style.width = `${elRect.width}px`;
+      slider.style.height = `${elRect.height}px`;
     };
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
@@ -86,22 +133,27 @@ export function TopNavBar() {
   };
 
   return (
-      <div className="mx-auto max-w-7xl px-4 py-2">
-        <nav aria-label="Primary" className="relative" onKeyDown={onKeyDown}>
-          <div className="pointer-events-none absolute left-0 top-0 h-full w-6 bg-gradient-to-r from-base-100 to-transparent md:hidden" />
-          <div className="pointer-events-none absolute right-0 top-0 h-full w-6 bg-gradient-to-l from-base-100 to-transparent md:hidden" />
+      <div className="dash-section pb-4">
+        <nav
+          aria-label="Primary"
+          className="relative overflow-hidden rounded-3xl border border-base-content/10 bg-gradient-to-br from-base-100/80 via-base-100/60 to-base-100/80 px-3 py-2 backdrop-blur-xl shadow-lg shadow-primary/5"
+          onKeyDown={onKeyDown}
+        >
+          <div className="pointer-events-none absolute left-0 top-0 h-full w-16 bg-gradient-to-r from-base-100/90 via-base-100/70 to-transparent md:hidden" />
+          <div className="pointer-events-none absolute right-0 top-0 h-full w-16 bg-gradient-to-l from-base-100/90 via-base-100/70 to-transparent md:hidden" />
           <div
             ref={containerRef}
-            className="relative -mb-px flex overflow-x-auto whitespace-nowrap no-scrollbar"
+            className="relative flex gap-2 overflow-x-auto whitespace-nowrap no-scrollbar py-1"
             role="tablist"
             aria-orientation="horizontal"
           >
             <div
               ref={sliderRef}
-              className="pointer-events-none absolute bottom-0 h-[2px] rounded bg-primary transition-transform duration-300 ease-out"
+              className="pointer-events-none absolute z-0 rounded-3xl border border-primary/20 bg-gradient-to-br from-primary/18 via-primary/12 to-accent/16 shadow-[0_28px_60px_-40px_rgba(37,99,235,0.9)] transition-transform duration-300 ease-out"
               aria-hidden
             />
             {TABS.map((t, i) => {
+              const meta = TAB_META[t];
               const isActive = t === tab;
               return (
                 <a
@@ -110,25 +162,31 @@ export function TopNavBar() {
                   href={`#/${t}`}
                   onClick={(e) => { e.preventDefault(); setTab(t); window.location.hash = `/${t}`; }}
                   className={[
-                    "tab tab-lg tabs-bordered transition-colors px-3 md:px-4",
-                    "focus:outline-none focus-visible:ring focus-visible:ring-primary/40 rounded-t",
-                    isActive ? "tab-active font-medium text-base-content" : "text-base-content/70 hover:text-base-content"
+                    "relative z-10 inline-flex min-w-[220px] items-center gap-4 rounded-3xl px-5 py-3 transition-all duration-200",
+                    "focus:outline-none focus-visible:ring-2 focus-visible:ring-primary/40",
+                    isActive
+                      ? "text-base-content"
+                      : "text-base-content/60 hover:text-base-content/90",
                   ].join(" ")}
                   role="tab"
                   aria-selected={isActive}
                   aria-controls={`panel-${t}`}
                 >
-                  <span className="inline-flex items-center gap-2">
-                    {t === "overview" && (
-                      <svg width="16" height="16" viewBox="0 0 24 24" className="opacity-80"><path fill="currentColor" d="M3 13h8V3H3v10zm0 8h8v-6H3v6zm10 0h8V11h-8v10zm0-18v6h8V3h-8z"/></svg>
-                    )}
-                    {t === "coverage" && (
-                      <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden className="opacity-80">
-                        <path fill="currentColor" d="M12 2l7 3v6c0 5.2-3.4 9.9-7 11c-3.6-1.1-7-5.8-7-11V5z"/>
-                        <path fill="currentColor" d="M10.2 13.6l-2.2-2.2L6.6 12.8l3.6 3.6l6.2-6.2l-1.4-1.4z"/>
-                      </svg>
-                    )}
-                    {t[0].toUpperCase() + t.slice(1)}
+                  <span
+                    className={[
+                      "flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl transition-colors duration-200",
+                      isActive
+                        ? "bg-primary/15 text-primary shadow-sm shadow-primary/30"
+                        : "bg-base-200/80 text-base-content/50",
+                    ].join(" ")}
+                  >
+                    {meta.icon(isActive)}
+                  </span>
+                  <span className="flex flex-col text-left">
+                    <span className="text-sm font-semibold tracking-tight">{meta.label}</span>
+                    <span className="text-xs font-medium uppercase tracking-[0.25em] text-base-content/50">
+                      {meta.description}
+                    </span>
                   </span>
                 </a>
               );

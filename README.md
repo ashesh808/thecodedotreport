@@ -9,6 +9,8 @@ th
 
 It spins up a live local dashboard (via `tdcr --serve`) where developers can instantly explore coverage data, track trends, and export professional-grade reports.
 
+![alt text](examples/dashboard.png)
+
 #### Features
 
 - **Zero-config setup** — works with any .NET project

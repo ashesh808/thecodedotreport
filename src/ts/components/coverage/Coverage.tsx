@@ -79,6 +79,9 @@ export default function Coverage({
   const pageClamped = Math.min(page, totalPages);
   const start = (pageClamped - 1) * pageSize;
   const pageKeys = new Set(sortedFlat.slice(start, start + pageSize).map((n) => rowKey(n.row)));
+  const totalVisible = flatVisible.length;
+  const showingCount = Math.max(0, Math.min(pageSize, totalVisible - start));
+  const sortLabel = friendlySortLabel(sortKey);
 
   React.useEffect(() => { setPage(1); }, [query, sortKey, sortDir, pageSize]);
 
@@ -95,22 +98,52 @@ export default function Coverage({
   };
 
   return (
-    <section className="space-y-4">
-      <div className="bg bg-base-200 card border">
-        <div className="card-body pb-3">
-          <div className="flex flex-col gap-3 md:flex-row md:items-end md:justify-between">
+    <section className="space-y-6">
+      <div className="card glass-surface shadow-primary/5">
+        <div className="card-body gap-5 py-6">
+          <div className="flex flex-col gap-3 lg:flex-row lg:items-center lg:justify-between">
+            <div>
+              <h3 className="text-lg font-semibold">Coverage controls</h3>
+              <p className="text-sm text-base-content/60">
+                Toggle metrics, adjust grouping, and compare snapshots without losing context.
+              </p>
+            </div>
             <div className="flex flex-wrap items-center gap-2">
-              <fieldset aria-label="Coverage types" className="flex flex-wrap items-center gap-2">
-                <CheckToggle label="Line" checked={showLine} onChange={() => setShowLine(!showLine)} />
-                <CheckToggle label="Branch" checked={showBranch} onChange={() => setShowBranch(!showBranch)} />
-                <CheckToggle label="Method" checked={showMethod} onChange={() => setShowMethod(!showMethod)} />
-                <CheckToggle
-                  label="Full method"
-                  checked={showFullMethod}
-                  onChange={() => setShowFullMethod(!showFullMethod)}
-                />
-              </fieldset>
-              <div className="divider divider-horizontal m-0 hidden md:flex" />
+              <button className="btn btn-sm btn-ghost border border-base-200/60 bg-base-100/70" onClick={onExpandAll}>
+                <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden className="-ml-0.5 mr-1 opacity-70">
+                  <path fill="currentColor" d="M12 5v14M5 12h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                Expand all
+              </button>
+              <button className="btn btn-sm btn-ghost border border-base-200/60 bg-base-100/70" onClick={onCollapseAll}>
+                <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden className="-ml-0.5 mr-1 opacity-70">
+                  <path fill="currentColor" d="M5 12h14" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+                </svg>
+                Collapse all
+              </button>
+              <button className="btn btn-sm btn-outline border-primary/40 text-primary hover:bg-primary/10" onClick={exportCSV}>
+                <svg width="14" height="14" viewBox="0 0 24 24" aria-hidden className="-ml-0.5 mr-1 opacity-70">
+                  <path fill="currentColor" d="M5 20h14v-2H5m14-7h-4V4H9v7H5l7 7z" />
+                </svg>
+                Export CSV
+              </button>
+            </div>
+          </div>
+          <div className="flex flex-col gap-4 lg:flex-row lg:items-end lg:justify-between">
+            <fieldset
+              aria-label="Coverage types"
+              className="flex flex-wrap items-center gap-2 rounded-2xl border border-base-content/10 bg-base-100/70 p-3"
+            >
+              <CheckToggle label="Line" checked={showLine} onChange={() => setShowLine(!showLine)} />
+              <CheckToggle label="Branch" checked={showBranch} onChange={() => setShowBranch(!showBranch)} />
+              <CheckToggle label="Method" checked={showMethod} onChange={() => setShowMethod(!showMethod)} />
+              <CheckToggle
+                label="Full method"
+                checked={showFullMethod}
+                onChange={() => setShowFullMethod(!showFullMethod)}
+              />
+            </fieldset>
+            <div className="flex w-full flex-col gap-4 sm:flex-row sm:items-center sm:justify-end sm:gap-3 lg:w-auto">
               <SelectField
                 label="Grouping"
                 value={groupBy}
@@ -120,7 +153,7 @@ export default function Coverage({
                   { value: "namespace", label: "Namespace" },
                   { value: "class", label: "Class" },
                 ]}
-                className="w-44"
+                className="sm:w-44"
               />
 
               <SelectField
@@ -131,28 +164,32 @@ export default function Coverage({
                   { value: "", label: "— None —" },
                   ...(snapshots?.map((s) => ({ value: s.id, label: s.label })) ?? []),
                 ]}
-                className="w-56"
+                className="sm:w-60"
               />
-              <div className="divider divider-horizontal m-0 hidden md:flex" />
-                <button className="btn btn-sm join-item" onClick={onExpandAll}>
-                  Expand all
-                </button>
-                <button className="btn btn-sm btn-outline join-item" onClick={onCollapseAll}>
-                  Collapse all
-                </button>
             </div>
           </div>
         </div>
       </div>
 
-      <div className="bg bg-base-200 card border">
-        <div className="card-body">
-          <SearchField
-                placeholder="Filter by name or path…"
-                value={query}
-                onChange={setQuery}
-                className="w-66"
-              />
+      <div className="card glass-surface shadow-primary/5">
+        <div className="card-body gap-5 py-6">
+          <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+            <SearchField
+              placeholder="Filter by name or path…"
+              value={query}
+              onChange={setQuery}
+              className="w-full md:max-w-sm"
+            />
+            <div className="flex flex-wrap items-center gap-3 text-sm text-base-content/60">
+              <span>
+                Showing {showingCount} of {totalVisible} entries
+              </span>
+              <span className="hidden md:inline text-base-content/30" aria-hidden>
+                •
+              </span>
+              <span>Sorted by {sortLabel} ({sortDir === "asc" ? "asc" : "desc"})</span>
+            </div>
+          </div>
           <CoverageTable
             rows={visibleTree}
             pageKeys={pageKeys}
@@ -246,12 +283,12 @@ function CoverageTable({
       .filter(Boolean) as CoverageRow[];
   }, [pageKeys]);
 
-  const pageTree = React.useMemo(() => filterToPage(rows), [rows, filterToPage]);
+const pageTree = React.useMemo(() => filterToPage(rows), [rows, filterToPage]);
 
   return (
-    <div className="overflow-auto">
+    <div className="overflow-auto rounded-2xl border border-base-content/10 bg-base-100/70">
       <table className="table table-zebra">
-        <thead className="sticky top-0 bg-base-100 z-[1]">
+        <thead className="sticky top-0 z-[1] bg-base-100/95 backdrop-blur">
           <tr>
             <Th label="Name" k="name" sortKey={sortKey} sortDir={sortDir} onSort={onSort} className="w-[30%]" />
             {show.line && (
@@ -412,15 +449,48 @@ const CoverageRowItem = React.memo(function CoverageRowItem({
   );
 });
 
+function friendlySortLabel(key: SortKey): string {
+  switch (key) {
+    case "name": return "Name";
+    case "linePct": return "Line %";
+    case "coveredLines": return "Covered lines";
+    case "uncoveredLines": return "Uncovered lines";
+    case "coverableLines": return "Coverable lines";
+    case "totalLines": return "Total lines";
+    case "branchPct": return "Branch %";
+    case "coveredBranches": return "Covered branches";
+    case "totalBranches": return "Total branches";
+    case "methodPct": return "Method %";
+    case "coveredMethods": return "Covered methods";
+    case "totalMethods": return "Total methods";
+    case "fullMethodPct": return "Full method %";
+    case "fullCoveredMethods": return "Fully covered methods";
+    default:
+      return key;
+  }
+}
+
 /* =========================================================================
    Tiny atoms
    ========================================================================= */
 
 function CheckToggle({ label, checked, onChange }: { label: string; checked: boolean; onChange: () => void }) {
   return (
-    <label className="label cursor-pointer gap-2">
-      <input type="checkbox" className="checkbox checkbox-sm" checked={checked} onChange={onChange} />
-      <span className="label-text text-sm">{label}</span>
+    <label
+      className={[
+        "inline-flex items-center gap-2 rounded-full border px-3 py-1.5 text-sm font-medium transition-colors",
+        checked
+          ? "border-primary/40 bg-primary/10 text-primary"
+          : "border-base-content/10 bg-base-100/80 text-base-content/70 hover:border-base-content/30",
+      ].join(" ")}
+    >
+      <input
+        type="checkbox"
+        className="checkbox checkbox-xs border-base-content/20 [--chkbg:theme(colors.primary)] [--chkfg:white]"
+        checked={checked}
+        onChange={onChange}
+      />
+      <span>{label}</span>
     </label>
   );
 }
@@ -441,10 +511,10 @@ function SelectField<T extends string>({
   return (
     <label className={`form-control ${className ?? ""}`}>
       <div className="label py-1">
-        <span className="label-text text-xs">{label}</span>
+        <span className="label-text text-xs uppercase tracking-[0.2em] text-base-content/50">{label}</span>
       </div>
       <select
-        className="select select-sm select-bordered"
+        className="select select-sm border border-base-content/10 bg-base-100/90 focus:outline-none focus:ring-2 focus:ring-primary/30"
         value={value}
         onChange={(e) => onChange(e.target.value as T)}
       >
@@ -470,8 +540,13 @@ function SearchField({
   className?: string;
 }) {
   return (
-    <label className={`input input-sm input-bordered flex items-center gap-2 ${className ?? ""}`}>
-      <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden>
+    <label
+      className={[
+        "input input-sm flex items-center gap-3 rounded-full border border-base-content/10 bg-base-100/80 backdrop-blur",
+        className ?? "",
+      ].join(" ")}
+    >
+      <svg width="16" height="16" viewBox="0 0 24 24" aria-hidden className="text-base-content/60">
         <path
           fill="currentColor"
           d="M10 18a8 8 0 1 1 6.32-3.16L22 20.5L20.5 22l-5.7-5.7A8 8 0 0 1 10 18m0-2a6 6 0 1 0 0-12a6 6 0 0 0 0 12"
@@ -479,7 +554,7 @@ function SearchField({
       </svg>
       <input
         type="text"
-        className="grow"
+        className="grow bg-transparent text-sm focus:outline-none"
         placeholder={placeholder}
         value={value}
         onChange={(e) => onChange(e.target.value)}
@@ -502,7 +577,12 @@ function Th({
   return (
     <th className={className}>
       <button
-        className={`btn btn-ghost btn-xs ${active ? "font-semibold" : ""}`}
+        className={[
+          "inline-flex items-center gap-1 rounded-full border px-3 py-1 text-xs uppercase tracking-wider transition-colors",
+          active
+            ? "border-primary/40 bg-primary/10 font-semibold text-primary"
+            : "border-transparent text-base-content/60 hover:border-base-content/20 hover:text-base-content",
+        ].join(" ")}
         onClick={() => onSort(k)}
         aria-sort={active ? (sortDir === "asc" ? "ascending" : "descending") : "none"}
       >
