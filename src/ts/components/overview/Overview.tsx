@@ -242,7 +242,6 @@ function HistoryCard({ history }: { history?: OverviewHistory[] }) {
       <div className="card-body gap-4 py-6">
         <div className="flex items-center justify-between">
           <h3 className="card-title">Coverage history</h3>
-          <p className="text-sm text-base-content/60">Rolling trend across recent snapshots</p>
         </div>
         <HistorySparklines history={history} />
       </div>
