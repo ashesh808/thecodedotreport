@@ -1,18 +1,8 @@
 import asyncio
 import time
-from typing import Final
 
 from app.core import RunAllExceptionResult, RunAllResult
-
-MAX_OUTPUT_CHARS: Final[int] = 50_000
-TIMEOUT_SECONDS: Final[int] = 15 * 60
-command = [
-    "dotnet",
-    "test",
-    "/p:CollectCoverage=true",
-    "/p:CoverletOutput=./TestResults/coverage",
-    "/p:CoverletOutputFormat=json",
-]
+from app.settings import MAX_OUTPUT_CHARS, TIMEOUT_SECONDS, command
 
 
 def _trim_output(raw: bytes) -> str:

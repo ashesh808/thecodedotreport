@@ -1,10 +1,9 @@
-import type { DashboardWire, OverviewTotals, OverviewSummary, OverviewHistory, Hotspot } from "@/types";
+import type { DashboardWire, OverviewTotals, OverviewSummary, OverviewHistory } from "@/types";
 
 type OverviewCore = {
   summary: OverviewSummary;
   totals: OverviewTotals;
   history?: OverviewHistory[];
-  hotspots: Hotspot[];
 };
 
 export function toOverviewProps(d: DashboardWire): OverviewCore {
@@ -53,7 +52,5 @@ export function toOverviewProps(d: DashboardWire): OverviewCore {
       }))
     : undefined;
 
-  const hotspots = d.hotspots ?? [];
-
-  return { summary, totals, history, hotspots };
+  return { summary, totals, history };
 }

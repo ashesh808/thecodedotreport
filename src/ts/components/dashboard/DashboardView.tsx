@@ -4,33 +4,16 @@ import { useHashTab } from "@/components/general/TopNavBar";
 import Overview from "@/components/overview/Overview";
 import Coverage from "@/components/coverage/Coverage";
 import type { DashboardWire } from "@/types";
+import { postRunAll } from "@/dashboard/api";
+import { normalizeDashboardProps } from "@/dashboard/normalize";
+import type { CoverletReport } from "@/dashboard/coverlet";
+import type { RunAllResponse, RunResult } from "@/dashboard/types";
 import RunResultBanner from "./RunResultBanner";
-import { normalizeDashboardProps, type CoverletReport } from "./normalize";
-import type { RunResult } from "./types";
-
-type RunAllSuccess = {
-  ok: true;
-  exit_code: number;
-  duration_seconds: number;
-  stdout: string;
-  stderr: string;
-};
-
-type RunAllFailure = {
-  ok: false;
-  error: string;
-  timeout?: boolean;
-  duration_seconds?: number;
-  stdout?: string;
-  stderr?: string;
-};
-
-type RunAllResponse = RunAllSuccess | RunAllFailure;
 
 export default function Dashboard(rawProps: DashboardWire | CoverletReport) {
   const { repoName, branch, status, overview, coverageRows, thresholds, allowRunAll } =
     React.useMemo(() => normalizeDashboardProps(rawProps), [rawProps]);
-  const { summary, totals, history, hotspots } = overview;
+  const { summary, totals, history } = overview;
   const [tab] = useHashTab();
   const [currentStatus, setCurrentStatus] = React.useState(status);
   const [isRunning, setIsRunning] = React.useState(false);
@@ -51,8 +34,8 @@ export default function Dashboard(rawProps: DashboardWire | CoverletReport) {
     let payload: RunAllResponse | null = null;
     let duration: number | undefined;
     try {
-      const response = await fetch("/run", { method: "POST" });
-      payload = (await readJson(response)) as RunAllResponse | null;
+      const { response, payload: body } = await postRunAll();
+      payload = body;
 
       duration =
         typeof payload?.duration_seconds === "number"
@@ -141,7 +124,6 @@ export default function Dashboard(rawProps: DashboardWire | CoverletReport) {
             summary={summary}
             totals={totals}
             history={history}
-            rows={coverageRows}
           />
         )}
         {tab === "coverage" && (
@@ -154,14 +136,4 @@ export default function Dashboard(rawProps: DashboardWire | CoverletReport) {
       </main>
     </div>
   );
-}
-
-async function readJson(response: Response): Promise<unknown> {
-  const text = await response.text();
-  if (!text) return null;
-  try {
-    return JSON.parse(text);
-  } catch {
-    return null;
-  }
 }

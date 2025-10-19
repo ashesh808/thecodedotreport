@@ -3,3 +3,6 @@ line-length = 79
 
 [tool.ruff.lint]
 select = ["E", "F", "W", "I"]
+
+[project.scripts]
+tcdr = "cli:main"

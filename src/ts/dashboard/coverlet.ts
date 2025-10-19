@@ -1,6 +1,4 @@
-import { toOverviewProps } from "@/mapper";
-import type { Hotspot, CoverageRow, DashboardWire, OverviewSummary } from "@/types";
-import type { DashboardContent } from "./types";
+import type { CoverageRow, OverviewSummary, OverviewTotals } from "@/types";
 
 type CoverletBranch = {
   Line?: number;
@@ -21,7 +19,7 @@ type CoverletFile = Record<string, CoverletClass>;
 type CoverletAssembly = Record<string, CoverletFile>;
 export type CoverletReport = Record<string, CoverletAssembly>;
 
-type MetricsAccumulator = {
+export type MetricsAccumulator = {
   lineCovered: number;
   lineUncovered: number;
   lineTotal: number;
@@ -32,64 +30,47 @@ type MetricsAccumulator = {
   methodTotal: number;
 };
 
-export function normalizeDashboardProps(
-  props: DashboardWire | CoverletReport
-): DashboardContent {
-  if (isDashboardWire(props)) {
-    const { summary, totals, history, hotspots } = toOverviewProps(props);
-    return {
-      repoName: props.repoName,
-      branch: props.branch,
-      status: props.status,
-      overview: { summary, totals, history, hotspots },
-      coverageRows: [],
-      thresholds: { total: props.thresholds.total },
-      allowRunAll: true,
-    };
-  }
+export type CoverletSummary = {
+  rows: CoverageRow[];
+  counts: {
+    assemblies: number;
+    classes: number;
+    files: number;
+  };
+  metrics: MetricsAccumulator;
+};
 
-  const report = props as CoverletReport;
+export function summarizeCoverletReport(report: CoverletReport): CoverletSummary {
   const assemblies: CoverageRow[] = [];
-  const assemblyNames = Object.keys(report);
   let overallMetrics = emptyMetrics();
   let assemblyCount = 0;
   let fileCount = 0;
   let classCount = 0;
-  const hotspotCandidates: Hotspot[] = [];
 
   for (const [assemblyName, files] of Object.entries(report)) {
     if (!files || typeof files !== "object") continue;
     assemblyCount += 1;
+
     let assemblyMetrics = emptyMetrics();
     const assemblyChildren: CoverageRow[] = [];
 
     for (const [filePath, classes] of Object.entries(files)) {
       if (!classes || typeof classes !== "object") continue;
       fileCount += 1;
+
       let fileMetrics = emptyMetrics();
       const classChildren: CoverageRow[] = [];
 
       for (const [className, methods] of Object.entries(classes)) {
         if (!methods || typeof methods !== "object") continue;
         classCount += 1;
+
         let classMetrics = emptyMetrics();
         const methodRows: CoverageRow[] = [];
 
         for (const [methodName, methodData] of Object.entries(methods)) {
           const methodMetrics = summarizeMethod(methodData);
           if (!hasCoverage(methodMetrics)) continue;
-
-          const coveragePct = coveragePercentage(methodMetrics);
-          if (coveragePct < 100) {
-            const uncoveredLines = collectUncoveredLines(methodData);
-            hotspotCandidates.push({
-              file: filePath,
-              function: simplifyMethodName(methodName),
-              reason: "low-cov",
-              score: Math.max(0, Math.min(100, 100 - coveragePct)),
-              lines: uncoveredLines.length ? uncoveredLines.join(", ") : undefined,
-            });
-          }
 
           methodRows.push(
             createRow({
@@ -114,6 +95,7 @@ export function normalizeDashboardProps(
             children: methodRows,
           })
         );
+
         fileMetrics = addMetrics(fileMetrics, classMetrics);
       }
 
@@ -128,6 +110,7 @@ export function normalizeDashboardProps(
           children: classChildren,
         })
       );
+
       assemblyMetrics = addMetrics(assemblyMetrics, fileMetrics);
     }
 
@@ -141,40 +124,70 @@ export function normalizeDashboardProps(
         children: assemblyChildren,
       })
     );
+
     overallMetrics = addMetrics(overallMetrics, assemblyMetrics);
   }
 
-  const totals = toOverviewTotals(overallMetrics);
-  const summary: OverviewSummary = {
-    parser: "coverlet",
-    assemblies: assemblyCount,
-    classes: classCount,
-    files: fileCount,
-  };
-
   return {
-    repoName: assemblyNames.length ? stripDllSuffix(assemblyNames[0]) : "Coverlet report",
-    branch: undefined,
-    status: "Ready",
-    overview: {
-      summary,
-      totals,
-      history: undefined,
-      hotspots: selectHotspots(hotspotCandidates),
+    rows: assemblies,
+    counts: {
+      assemblies: assemblyCount,
+      classes: classCount,
+      files: fileCount,
     },
-    coverageRows: assemblies,
-    thresholds: undefined,
-    allowRunAll: true,
+    metrics: overallMetrics,
   };
 }
 
-function isDashboardWire(value: unknown): value is DashboardWire {
-  return (
-    !!value &&
-    typeof value === "object" &&
-    "totals" in value &&
-    "thresholds" in value
-  );
+export function metricsToOverviewTotals(metrics: MetricsAccumulator): OverviewTotals {
+  const coverable = metrics.lineCovered + metrics.lineUncovered;
+  const linePct = coverable > 0 ? (metrics.lineCovered / coverable) * 100 : Number.NaN;
+  const branchPct =
+    metrics.branchTotal > 0 ? (metrics.branchCovered / metrics.branchTotal) * 100 : Number.NaN;
+  const methodPct =
+    metrics.methodTotal > 0 ? (metrics.methodCovered / metrics.methodTotal) * 100 : Number.NaN;
+  const fullMethodPct =
+    metrics.methodTotal > 0
+      ? (metrics.methodFullCovered / metrics.methodTotal) * 100
+      : Number.NaN;
+
+  return {
+    lines: {
+      pct: linePct,
+      covered: metrics.lineCovered,
+      uncovered: metrics.lineUncovered,
+      coverable,
+      total: metrics.lineTotal || coverable,
+    },
+    branches: {
+      pct: branchPct,
+      covered: metrics.branchCovered,
+      total: metrics.branchTotal,
+    },
+    methods: {
+      pct: methodPct,
+      fullPct: fullMethodPct,
+      covered: metrics.methodCovered,
+      fullCovered: metrics.methodFullCovered,
+      total: metrics.methodTotal,
+    },
+  };
+}
+
+export function buildCoverletSummary(report: CoverletReport): {
+  rows: CoverageRow[];
+  overviewSummary: OverviewSummary;
+  totals: OverviewTotals;
+} {
+  const { rows, counts, metrics } = summarizeCoverletReport(report);
+  const totals = metricsToOverviewTotals(metrics);
+  const overviewSummary: OverviewSummary = {
+    parser: "coverlet",
+    assemblies: counts.assemblies,
+    classes: counts.classes,
+    files: counts.files,
+  };
+  return { rows, overviewSummary, totals };
 }
 
 function emptyMetrics(): MetricsAccumulator {
@@ -227,8 +240,7 @@ function summarizeMethod(method: CoverletMethod | undefined): MetricsAccumulator
   const coveredBranches = branchValues.filter((b) => (b?.Hits ?? 0) > 0).length;
   const totalBranches = branchValues.length;
 
-  const hasData = coverable > 0 || totalBranches > 0;
-  if (!hasData) {
+  if (coverable === 0 && totalBranches === 0) {
     return metrics;
   }
 
@@ -245,39 +257,6 @@ function summarizeMethod(method: CoverletMethod | undefined): MetricsAccumulator
   metrics.methodFullCovered = methodFull ? 1 : 0;
 
   return metrics;
-}
-
-function toOverviewTotals(metrics: MetricsAccumulator): DashboardContent["overview"]["totals"] {
-  const coverable = metrics.lineCovered + metrics.lineUncovered;
-  const linePct = coverable > 0 ? (metrics.lineCovered / coverable) * 100 : Number.NaN;
-  const branchPct =
-    metrics.branchTotal > 0 ? (metrics.branchCovered / metrics.branchTotal) * 100 : Number.NaN;
-  const methodPct =
-    metrics.methodTotal > 0 ? (metrics.methodCovered / metrics.methodTotal) * 100 : Number.NaN;
-  const fullMethodPct =
-    metrics.methodTotal > 0 ? (metrics.methodFullCovered / metrics.methodTotal) * 100 : Number.NaN;
-
-  return {
-    lines: {
-      pct: linePct,
-      covered: metrics.lineCovered,
-      uncovered: metrics.lineUncovered,
-      coverable,
-      total: metrics.lineTotal || coverable,
-    },
-    branches: {
-      pct: branchPct,
-      covered: metrics.branchCovered,
-      total: metrics.branchTotal,
-    },
-    methods: {
-      pct: methodPct,
-      fullPct: fullMethodPct,
-      covered: metrics.methodCovered,
-      fullCovered: metrics.methodFullCovered,
-      total: metrics.methodTotal,
-    },
-  };
 }
 
 function createRow({
@@ -301,7 +280,9 @@ function createRow({
   const methodPct =
     counts.methodTotal > 0 ? (counts.methodCovered / counts.methodTotal) * 100 : Number.NaN;
   const fullMethodPct =
-    counts.methodTotal > 0 ? (counts.methodFullCovered / counts.methodTotal) * 100 : Number.NaN;
+    counts.methodTotal > 0
+      ? (counts.methodFullCovered / counts.methodTotal) * 100
+      : Number.NaN;
 
   return {
     name,
@@ -353,45 +334,13 @@ function simplifyMethodName(methodName: string): string {
   return namePart.replace(/^System\./, "");
 }
 
-function collectUncoveredLines(method: CoverletMethod | undefined): string[] {
-  if (!method?.Lines) return [];
-  return Object.entries(method.Lines)
-    .filter(([, hits]) => hits === 0)
-    .map(([line]) => line)
-    .sort((a, b) => Number(a) - Number(b));
-}
-
 function formatLineRange(method: CoverletMethod | undefined): string | undefined {
   if (!method?.Lines) return undefined;
   const numbers = Object.keys(method.Lines)
-    .map((l) => Number(l))
-    .filter((n) => !Number.isNaN(n))
+    .map((line) => Number(line))
+    .filter((line) => !Number.isNaN(line))
     .sort((a, b) => a - b);
   if (!numbers.length) return undefined;
-  const first = numbers[0];
-  const last = numbers[numbers.length - 1];
-  if (first === last) return `Line ${first}`;
-  return `Lines ${first}-${last}`;
-}
-
-function coveragePercentage(metrics: MetricsAccumulator): number {
-  const coverable = metrics.lineCovered + metrics.lineUncovered;
-  if (coverable > 0) {
-    return (metrics.lineCovered / coverable) * 100;
-  }
-  if (metrics.branchTotal > 0) {
-    return (metrics.branchCovered / metrics.branchTotal) * 100;
-  }
-  return metrics.methodTotal > 0 ? (metrics.methodCovered / metrics.methodTotal) * 100 : 0;
-}
-
-function selectHotspots(hotspots: Hotspot[]): Hotspot[] {
-  return hotspots
-    .filter((h) => h.score > 0)
-    .sort((a, b) => b.score - a.score)
-    .slice(0, 20);
-}
-
-function stripDllSuffix(name: string): string {
-  return name.endsWith(".dll") ? name.slice(0, -4) : name;
+  const [first, last] = [numbers[0], numbers[numbers.length - 1]];
+  return first === last ? `Line ${first}` : `Lines ${first}-${last}`;
 }

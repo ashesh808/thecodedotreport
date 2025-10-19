@@ -1,24 +1,76 @@
+import argparse
 import asyncio
 import json
+import sys
 from dataclasses import asdict
 from pathlib import Path
 
 from z8ter.cli.run_server import run_server
 
-from app.test_execution import run_all_tests
+from app.features.execute_tests import run_all_tests
+from app.features.generate_props import generate_dashboard_props
 
 MODE = "dev"
 HOST = "127.0.0.1"
-PORT = 8080
-DASHBOARD_PATH = Path("content/dashboard.json")
+DEFAULT_PORT = 8080
 
 
-async def run_tcdr():
+async def run_tcdr(port: int) -> int:
+    """
+    Runs tests, generates dashboard props, then starts the server.
+    Returns exit code.
+    """
     res = await run_all_tests()
 
     if not res.ok:
         print("There was an error in executing the tests, see details below:")
         print(json.dumps(asdict(res), indent=2))
 
-    DASHBOARD_PATH.parent.mkdir(parents=True, exist_ok=True)
-    await asyncio.to_thread(run_server, MODE, HOST, PORT, reload=True)
+    content_path: Path = generate_dashboard_props()
+    print(f"Dashboard props generated at: {content_path}")
+
+    await asyncio.to_thread(run_server, MODE, HOST, port, reload=True)
+    return 0
+
+
+def parse_args(argv: list[str]) -> int:
+    parser = argparse.ArgumentParser(
+        prog="tcdr",
+        description="The Code Report — zero-config .NET coverage dashboard",
+        add_help=True,
+    )
+    parser.add_argument(
+        "--serve",
+        nargs="?",
+        const=DEFAULT_PORT,
+        type=int,
+        metavar="PORT",
+        help="Run tests, generate dashboard props, "
+        + "and start the server (default PORT: 8080).",
+    )
+    args = parser.parse_args(argv)
+
+    if args.serve is None:
+        parser.print_help()
+        return 2
+
+    port = int(args.serve)
+    if not (1 <= port <= 65535):
+        print(f"Invalid port: {port}. Use 1-65535.", file=sys.stderr)
+        return 2
+
+    try:
+        asyncio.run(run_tcdr(port))
+        return 0
+    except KeyboardInterrupt:
+        print("\nShutting down...")
+        return 130
+
+
+def main() -> None:
+    code = parse_args(sys.argv[1:])
+    raise SystemExit(code)
+
+
+if __name__ == "__main__":
+    main()

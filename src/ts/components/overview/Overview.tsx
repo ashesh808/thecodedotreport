@@ -1,11 +1,11 @@
 import React from "react";
-import {
-  OverviewTotals,
-  OverviewSummary,
-  OverviewHistory,
-  OverviewProps,
-  Hotspot
-} from "@/types";
+import type { OverviewTotals, OverviewSummary, OverviewHistory } from "@/types";
+
+type OverviewProps = {
+  summary: OverviewSummary;
+  totals: OverviewTotals;
+  history?: OverviewHistory[];
+};
 
 /* =========================================================================
    Overview (root)

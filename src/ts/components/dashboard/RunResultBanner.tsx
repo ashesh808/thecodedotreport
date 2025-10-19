@@ -1,4 +1,4 @@
-import type { RunResult } from "./types";
+import type { RunResult } from "@/dashboard/types";
 
 type Props = {
   result: RunResult;

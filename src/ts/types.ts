@@ -1,20 +1,18 @@
-export type Hotspot = {
-  file: string;
-  function?: string;
-  reason: "complexity" | "low-cov" | "flaky" | "new-code" | "other";
-  score: number;
-  lines?: string;
-};
+/*
+=========================================================================
+   Dashboard
+=========================================================================
+*/
 
 export type DashboardWire = {
   repoName: string;
   branch: string;
   status: "Idle" | "Running" | "Parsing" | "Ready" | "Error";
   totals: {
-    lines: number;        // %
-    branches: number;     // %
-    methods?: number;     // %
-    fullMethods?: number; // %
+    lines: number;
+    branches: number;
+    methods?: number;
+    fullMethods?: number;
     counts?: {
       lines?: { covered: number; uncovered: number; coverable: number; total: number };
       branches?: { covered: number; total: number };
@@ -22,18 +20,20 @@ export type DashboardWire = {
     };
   };
   commit: { sha: string; short: string; message: string; author: string; timestamp: string };
-  diff: { base: string; coverage: number; filesChanged: number; failedThreshold: boolean };
   thresholds: { total: number; diff: number };
   summary?: {
     parser?: string; assemblies?: number; classes?: number; files?: number;
     generatedBy?: string; generatedAt?: string;
   };
-  trend?: number[]; // line% history (0..100)
-  topUncovered?: { path: string; lines: number[] }[];
-  hotspots?: Hotspot[];
+  trend?: number[];
 };
 
-// ---- Overview shapes (single source of truth for totals) -------------------
+/*
+=========================================================================
+   Overview
+=========================================================================
+*/
+
 export type OverviewTotals = {
   lines:    { covered?: number; uncovered?: number; coverable?: number; total?: number; pct: number };
   branches: { covered?: number; total?: number; pct: number };
@@ -46,12 +46,19 @@ export type OverviewSummary = {
 };
 
 export type OverviewHistory = {
-  at: string;            // ISO
-  linePct: number;       // 0..100
-  branchPct: number;     // 0..100
-  methodPct: number;     // 0..100
-  fullMethodPct: number; // 0..100
+  at: string;
+  linePct: number;
+  branchPct: number;
+  methodPct: number;
+  fullMethodPct: number;
 };
+
+
+/*
+=========================================================================
+   Coverage
+=========================================================================
+*/
 
 export type CoverageRow = {
   name: string;
@@ -61,26 +68,13 @@ export type CoverageRow = {
   lines:    { covered: number; uncovered: number; coverable: number; total: number; pct: number };
   branches: { covered: number; total: number; pct: number } | null;
   methods:  { covered: number; fullCovered: number; total: number; pct: number; fullPct: number } | null;
-  delta?:   { linePct?: number; branchPct?: number; methodPct?: number; fullMethodPct?: number }; // for compare
+  delta?:   { linePct?: number; branchPct?: number; methodPct?: number; fullMethodPct?: number };
 };
 
-export type OverviewProps = {
-  summary: OverviewSummary;
-  totals: OverviewTotals;
-  history?: OverviewHistory[];
+export type CoverageProps = {
   rows: CoverageRow[];
   snapshots?: { id: string; label: string }[];
   onSelectSnapshot?: (id: string | null) => void;
-};
-
-/* =========================================================================
-   Props
-   ========================================================================= */
-
-export type CoverageProps = {
-  rows: CoverageRow[];                                 // top-level assemblies
-  snapshots?: { id: string; label: string }[];
-  onSelectSnapshot?: (id: string | null) => void;      // host recomputes row.delta if desired
-  thresholds?: { total?: number };                     // highlight rows below line% threshold
-  pageSize?: number;                                   // default 50
+  thresholds?: { total?: number };
+  pageSize?: number;
 };
