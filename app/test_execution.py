@@ -6,7 +6,13 @@ from app.core import RunAllExceptionResult, RunAllResult
 
 MAX_OUTPUT_CHARS: Final[int] = 50_000
 TIMEOUT_SECONDS: Final[int] = 15 * 60
-command = ["dotnet", "test", '--collect:"XPlat Code Coverage;Format=json"']
+command = [
+    "dotnet",
+    "test",
+    "/p:CollectCoverage=true",
+    "/p:CoverletOutput=./TestResults/coverage",
+    "/p:CoverletOutputFormat=json",
+]
 
 
 def _trim_output(raw: bytes) -> str:
@@ -53,7 +59,8 @@ async def run_all_tests():
             duration_seconds=round(duration, 2),
             stdout=_trim_output(stderr_raw),
             stderr=_trim_output(stderr_raw),
-            error="`dotnet test` exceeded timeout ({TIMEOUT_SECONDS} seconds)."
+            error="`dotnet test` "
+            + "exceeded timeout ({TIMEOUT_SECONDS} seconds).",
         )
         return timeout_error_result
 

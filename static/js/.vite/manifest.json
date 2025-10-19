@@ -1,6 +1,6 @@
 {
   "src/ts/app.ts": {
-    "file": "assets/app-Djn_OcsG.js",
+    "file": "assets/app-CufyKrob.js",
     "name": "app",
     "src": "src/ts/app.ts",
     "isEntry": true,
@@ -9,7 +9,7 @@
     ]
   },
   "src/ts/pages/dashboard.ts": {
-    "file": "assets/dashboard-BWnkvnBP.js",
+    "file": "assets/dashboard-BT_ZbyUk.js",
     "name": "dashboard",
     "src": "src/ts/pages/dashboard.ts",
     "isDynamicEntry": true

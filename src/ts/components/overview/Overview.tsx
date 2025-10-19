@@ -15,53 +15,12 @@ export default function Overview({
   summary,
   totals,
   history,
-  hotspots
 }: OverviewProps) {
-  const [sortHotspotsBy, setSortHotspotsBy] = React.useState<"score" | "file" | "reason">("score");
   return (
     <section className="space-y-6">
       <SummaryBar info={summary} totals={totals} />
       <KpiGrid totals={totals} history={history} />
-      <HistoryCard history={history} />
-      <HotspotsCard hotspots={hotspots} sortBy={sortHotspotsBy} onSortBy={setSortHotspotsBy} />
     </section>
-  );
-}
-
-/* =========================================================================
-   Small form atoms
-   ========================================================================= */
-
-function SelectField<T extends string>({
-  label,
-  value,
-  onChange,
-  options,
-  className,
-}: {
-  label: string;
-  value: T | string;
-  onChange: (v: T | string) => void;
-  options: { value: T | string; label: string }[];
-  className?: string;
-}) {
-  return (
-    <label className={`form-control ${className ?? ""}`}>
-      <div className="label py-1">
-        <span className="label-text text-xs">{label}</span>
-      </div>
-      <select
-        className="select select-sm border border-base-content/10 bg-base-100/90 focus:outline-none focus:ring-2 focus:ring-primary/30"
-        value={value}
-        onChange={(e) => onChange(e.target.value as T)}
-      >
-        {options.map((o) => (
-          <option key={String(o.value)} value={o.value}>
-            {o.label}
-          </option>
-        ))}
-      </select>
-    </label>
   );
 }
 
@@ -81,9 +40,6 @@ function SummaryBar({ info, totals }: { info: OverviewSummary; totals: OverviewT
             <h2 className="mt-1 text-2xl font-semibold leading-tight">
               {fmtPct(totals.lines.pct)} overall line coverage
             </h2>
-            <p className="mt-2 max-w-xl text-sm text-base-content/60">
-              Track how your repository is evolving at a glance, with a breakdown of coverage metrics and risk hotspots refreshed from the latest report run.
-            </p>
           </div>
         </div>
         <div className="flex flex-wrap items-center gap-3 text-sm lg:max-w-xl">
@@ -219,165 +175,6 @@ function DeltaBadge({ delta }: { delta?: number | null }) {
       </svg>
       {Math.abs(d).toFixed(1)}%
     </span>
-  );
-}
-
-/* =========================================================================
-   History
-   ========================================================================= */
-
-function HistoryCard({ history }: { history?: OverviewHistory[] }) {
-  if (!history?.length) {
-    return (
-      <div className="card glass-surface">
-        <div className="card-body py-6">
-          <h3 className="card-title">Coverage history</h3>
-          <p className="text-sm text-base-content/60">No history yet.</p>
-        </div>
-      </div>
-    );
-  }
-  return (
-    <div className="card glass-surface shadow-primary/5">
-      <div className="card-body gap-4 py-6">
-        <div className="flex items-center justify-between">
-          <h3 className="card-title">Coverage history</h3>
-        </div>
-        <HistorySparklines history={history} />
-      </div>
-    </div>
-  );
-}
-
-function HistorySparklines({ history }: { history: OverviewHistory[] }) {
-  return (
-    <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
-      <Sparkline title="Line %" data={history.map((h) => h.linePct)} />
-      <Sparkline title="Branch %" data={history.map((h) => h.branchPct)} />
-      <Sparkline title="Method %" data={history.map((h) => h.methodPct)} />
-      <Sparkline title="Full method %" data={history.map((h) => h.fullMethodPct)} />
-    </div>
-  );
-}
-
-function Sparkline({ title, data }: { title: string; data: number[] }) {
-  const w = 220,
-    h = 48,
-    pad = 6;
-  const xs = data.map((_, i) => (i / Math.max(1, data.length - 1)) * (w - pad * 2) + pad);
-  const ys = data.map((v) => (1 - clamp(v, 0, 100) / 100) * (h - pad * 2) + pad);
-  const d = xs.map((x, i) => `${i === 0 ? "M" : "L"}${x.toFixed(1)},${ys[i].toFixed(1)}`).join(" ");
-  const last = data[data.length - 1];
-  return (
-    <div className="rounded-2xl border border-base-content/5 bg-base-100/60 p-4">
-      <div className="mb-2 flex items-baseline justify-between">
-        <span className="text-sm font-medium">{title}</span>
-        <span className="text-xs text-base-content/60">{fmtPct(last)}</span>
-      </div>
-      <svg width={w} height={h} viewBox={`0 0 ${w} ${h}`} className="block text-primary">
-        <rect x="0" y="0" width={w} height={h} rx="10" className="fill-base-200/70" />
-        <path d={d} fill="none" stroke="currentColor" strokeOpacity="0.85" strokeWidth="2.4" />
-        <circle cx={xs[xs.length - 1]} cy={ys[ys.length - 1]} r="3" className="fill-accent" />
-      </svg>
-    </div>
-  );
-}
-
-/* =========================================================================
-   Hotspots
-   ========================================================================= */
-
-function HotspotsCard({
-  hotspots,
-  sortBy,
-  onSortBy,
-}: {
-  hotspots?: Hotspot[];
-  sortBy: "score" | "file" | "reason";
-  onSortBy: (s: "score" | "file" | "reason") => void;
-}) {
-  const items = React.useMemo(() => {
-    const arr = [...(hotspots ?? [])];
-    arr.sort((a, b) => {
-      if (sortBy === "score") return (b.score ?? 0) - (a.score ?? 0);
-      if (sortBy === "file") return (a.file || "").localeCompare(b.file || "");
-      return (a.reason || "").localeCompare(b.reason || "");
-    });
-    return arr;
-  }, [hotspots, sortBy]);
-
-  return (
-    <div className="card glass-surface shadow-primary/5">
-      <div className="card-body gap-4 py-6">
-        <div className="flex flex-col gap-2 md:flex-row md:items-center md:justify-between">
-          <div>
-            <h3 className="card-title">Risk Hotspots</h3>
-            <p className="text-sm text-base-content/60">High priority files that merit a closer look.</p>
-          </div>
-          <SelectField
-            label="Sort by"
-            value={sortBy}
-            onChange={(v) => onSortBy(v as any)}
-            options={[
-              { value: "score", label: "Risk score" },
-              { value: "file", label: "File" },
-              { value: "reason", label: "Reason" },
-            ]}
-            className="w-40"
-          />
-        </div>
-
-        {!items.length ? (
-          <p className="text-sm text-base-content/60">No risk hotspots found.</p>
-        ) : (
-          <div className="mt-2 grid gap-2 md:grid-cols-2">
-            {items.map((h, idx) => (
-              <HotspotRow key={`${h.file}:${h.lines ?? idx}`} hotspot={h} />
-            ))}
-          </div>
-        )}
-      </div>
-    </div>
-  );
-}
-
-function HotspotRow({ hotspot }: { hotspot: Hotspot }) {
-  const color =
-    hotspot.score >= 75 ? "badge-error" : hotspot.score >= 50 ? "badge-warning" : hotspot.score >= 25 ? "badge-info" : "badge-success";
-  const meterGradient =
-    hotspot.score >= 75
-      ? "linear-gradient(90deg, rgba(239,68,68,0.9), rgba(248,113,113,0.7))"
-      : hotspot.score >= 50
-        ? "linear-gradient(90deg, rgba(245,158,11,0.85), rgba(253,224,71,0.6))"
-        : hotspot.score >= 25
-          ? "linear-gradient(90deg, rgba(14,165,233,0.85), rgba(56,189,248,0.6))"
-          : "linear-gradient(90deg, rgba(34,197,94,0.85), rgba(134,239,172,0.6))";
-
-  return (
-    <div className="group rounded-2xl border border-base-content/10 bg-base-100/80 p-4 shadow-sm shadow-primary/5">
-      <div className="flex items-start justify-between gap-3">
-        <div className="min-w-0">
-          <div className="flex items-center gap-2">
-            <span className="truncate font-medium">{hotspot.file}</span>
-            {hotspot.lines && (
-              <code className="rounded bg-base-200 px-1.5 py-0.5 text-xs text-base-content/70">{hotspot.lines}</code>
-            )}
-          </div>
-          {hotspot.function && <div className="mt-0.5 truncate text-xs text-base-content/70">{hotspot.function}</div>}
-          <div className="mt-2 text-xs text-base-content/60 capitalize">Reason: {hotspot.reason.replace("-", " ")}</div>
-        </div>
-        <span className={`badge ${color} font-medium shadow-sm`}>{Math.round(hotspot.score)} / 100</span>
-      </div>
-      <div className="mt-3 h-2 w-full overflow-hidden rounded-full bg-base-200/60">
-        <div
-          className="h-full"
-          style={{
-            width: `${clamp(hotspot.score, 0, 100)}%`,
-            backgroundImage: meterGradient,
-          }}
-        />
-      </div>
-    </div>
   );
 }
 

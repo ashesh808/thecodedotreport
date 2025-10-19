@@ -1,17 +1,6 @@
 import React from "react";
-import type { CoverageRow } from "@/types";
+import type { CoverageRow, CoverageProps } from "@/types";
 
-/* =========================================================================
-   Props
-   ========================================================================= */
-
-export type CoverageProps = {
-  rows: CoverageRow[];                                 // top-level assemblies
-  snapshots?: { id: string; label: string }[];
-  onSelectSnapshot?: (id: string | null) => void;      // host recomputes row.delta if desired
-  thresholds?: { total?: number };                     // highlight rows below line% threshold
-  pageSize?: number;                                   // default 50
-};
 
 /* =========================================================================
    Coverage Page (root)
@@ -47,7 +36,6 @@ export default function Coverage({
   };
 
   const visibleTree = React.useMemo(() => {
-    // filter by name or path; keep parents if any child matches
     if (!query.trim()) return rows;
     const q = query.toLowerCase();
     const match = (r: CoverageRow) =>
@@ -67,14 +55,12 @@ export default function Coverage({
     [visibleTree]
   );
 
-  // Sorting only affects the *flat export & pagination presentation order* for now.
   const sortedFlat = React.useMemo(() => {
     const arr = [...flatVisible];
     arr.sort((a, b) => cmpRow(a.row, b.row, sortKey, sortDir));
     return arr;
   }, [flatVisible, sortKey, sortDir]);
 
-  // Pagination over the flattened view (tree still renders hierarchically)
   const totalPages = Math.max(1, Math.ceil(sortedFlat.length / pageSize));
   const pageClamped = Math.min(page, totalPages);
   const start = (pageClamped - 1) * pageSize;
@@ -221,7 +207,7 @@ type SortKey =
 
 function CoverageTable({
   rows,
-  pageKeys, // which flattened keys are visible on this page
+  pageKeys,
   query,
   show,
   groupBy,
@@ -290,7 +276,14 @@ const pageTree = React.useMemo(() => filterToPage(rows), [rows, filterToPage]);
       <table className="table table-zebra">
         <thead className="sticky top-0 z-[1] bg-base-100/95 backdrop-blur">
           <tr>
-            <Th label="Name" k="name" sortKey={sortKey} sortDir={sortDir} onSort={onSort} className="w-[30%]" />
+            <Th
+              label="Name"
+              k="name"
+              sortKey={sortKey}
+              sortDir={sortDir}
+              onSort={onSort}
+              className="w-[18rem] max-w-[18rem]"
+            />
             {show.line && (
               <>
                 <Th label="Covered"   k="coveredLines"   sortKey={sortKey} sortDir={sortDir} onSort={onSort} />
@@ -370,8 +363,8 @@ const CoverageRowItem = React.memo(function CoverageRowItem({
   return (
     <>
       <tr className={underThreshold ? "bg-error/5" : undefined}>
-        <td>
-          <div className="flex items-center gap-2" style={{ paddingLeft: `${level * 16}px` }}>
+        <td className="w-[18rem] max-w-[18rem] align-top">
+          <div className="flex items-center gap-2 max-w-full" style={{ paddingLeft: `${level * 16}px` }}>
             {hasChildren ? (
               <button
                 className="btn btn-ghost btn-xs"
@@ -386,7 +379,7 @@ const CoverageRowItem = React.memo(function CoverageRowItem({
             ) : (
               <span className="w-5" />
             )}
-            <div className="min-w-0">
+            <div className="min-w-0 max-w-full">
               <div className="truncate font-medium">{row.name}</div>
               {row.path && <div className="truncate text-xs text-base-content/60">{row.path}</div>}
             </div>

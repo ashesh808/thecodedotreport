@@ -60,6 +60,7 @@ export default function Header({
 }: HeaderProps) {
   const scrolled = useScrolled();
   const isRunning = status === "Running";
+  const runDisabled = isRunning || !onRunAll;
 
   return (
     <header
@@ -71,7 +72,6 @@ export default function Header({
     >
       <div className="dash-section py-3">
         <div className="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
-          {/* brand + repo */}
           <div className="flex w-full items-center gap-3 md:w-auto">
             <div className="hidden sm:flex h-11 w-11 shrink-0 items-center justify-center rounded-2xl border border-primary/50 bg-primary/15 text-primary shadow-elevated">
               <svg
@@ -110,20 +110,18 @@ export default function Header({
             </div>
           </div>
 
-          {/* actions */}
           <div className="flex flex-wrap items-center gap-2">
             <ThemeToggle />
-
             <button
               type="button"
               className={[
                 "btn btn-sm btn-primary shadow-sm shadow-primary/20 transition-all",
-                isRunning ? "btn-disabled cursor-progress opacity-80" : "",
+                runDisabled ? "btn-disabled cursor-not-allowed opacity-60" : "",
               ].join(" ")}
-              onClick={() => !isRunning && onRunAll?.()}
+              onClick={() => !runDisabled && onRunAll?.()}
               title="Run all tests (R)"
               aria-label="Run all tests"
-              disabled={isRunning}
+              disabled={runDisabled}
               aria-busy={isRunning}
             >
               {isRunning ? (

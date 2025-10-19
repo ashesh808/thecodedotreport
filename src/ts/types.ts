@@ -1,10 +1,9 @@
-// ---- Atomic types ---------------------------------------------------------
 export type Hotspot = {
   file: string;
   function?: string;
   reason: "complexity" | "low-cov" | "flaky" | "new-code" | "other";
-  score: number;            // 0..100
-  lines?: string;           // e.g. "42-44,67"
+  score: number;
+  lines?: string;
 };
 
 export type DashboardWire = {
@@ -54,10 +53,9 @@ export type OverviewHistory = {
   fullMethodPct: number; // 0..100
 };
 
-// Hierarchical rows for Coverage table (assembly -> namespace -> class -> file)
 export type CoverageRow = {
   name: string;
-  kind: "assembly" | "namespace" | "class" | "file";
+  kind: "assembly" | "namespace" | "class" | "file" | "method";
   path?: string;
   children?: CoverageRow[];
   lines:    { covered: number; uncovered: number; coverable: number; total: number; pct: number };
@@ -70,8 +68,19 @@ export type OverviewProps = {
   summary: OverviewSummary;
   totals: OverviewTotals;
   history?: OverviewHistory[];
-  hotspots?: Hotspot[];
-  rows: CoverageRow[];   // top-level (assemblies)
+  rows: CoverageRow[];
   snapshots?: { id: string; label: string }[];
   onSelectSnapshot?: (id: string | null) => void;
+};
+
+/* =========================================================================
+   Props
+   ========================================================================= */
+
+export type CoverageProps = {
+  rows: CoverageRow[];                                 // top-level assemblies
+  snapshots?: { id: string; label: string }[];
+  onSelectSnapshot?: (id: string | null) => void;      // host recomputes row.delta if desired
+  thresholds?: { total?: number };                     // highlight rows below line% threshold
+  pageSize?: number;                                   // default 50
 };

@@ -47,7 +47,7 @@ export function toOverviewProps(d: DashboardWire): OverviewCore {
     ? trend.map((linePct, i) => ({
         at: i === trend.length - 1 ? now : new Date(Date.parse(now) - (trend.length - 1 - i) * 60_000).toISOString(),
         linePct,
-        branchPct: d.totals.branches,                 // swap in real branch trend when you have it
+        branchPct: d.totals.branches,
         methodPct: d.totals.methods ?? Number.NaN,
         fullMethodPct: d.totals.fullMethods ?? Number.NaN,
       }))

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { JSX } from "react";
 
 const TABS = ["overview", "coverage"] as const;
 type Tab = typeof TABS[number];
