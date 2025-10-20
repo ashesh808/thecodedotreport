@@ -23,6 +23,7 @@
     "build": "npm run build:css && npm run build:js"
   },
   "dependencies": {
+    "i": "^0.3.7",
     "react": "^19.2.0",
     "react-dom": "^19.2.0"
   }
