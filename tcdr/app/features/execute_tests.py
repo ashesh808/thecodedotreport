@@ -1,8 +1,8 @@
 import asyncio
 import time
 
-from app.core import RunAllExceptionResult, RunAllResult
-from app.settings import MAX_OUTPUT_CHARS, TIMEOUT_SECONDS, command
+from tcdr.app.core import RunAllExceptionResult, RunAllResult
+from tcdr.app.settings import MAX_OUTPUT_CHARS, TIMEOUT_SECONDS, command
 
 
 def _trim_output(raw: bytes) -> str:

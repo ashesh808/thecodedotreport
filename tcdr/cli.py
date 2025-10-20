@@ -5,10 +5,11 @@ import sys
 from dataclasses import asdict
 from pathlib import Path
 
-from z8ter.cli.run_server import run_server
+import uvicorn
 
-from app.features.execute_tests import run_all_tests
-from app.features.generate_props import generate_dashboard_props
+from tcdr.app.features.execute_tests import run_all_tests
+from tcdr.app.features.generate_props import generate_dashboard_props
+from tcdr.app.web import create_app
 
 MODE = "dev"
 HOST = "127.0.0.1"
@@ -28,15 +29,16 @@ async def run_tcdr(port: int) -> int:
 
     content_path: Path = generate_dashboard_props()
     print(f"Dashboard props generated at: {content_path}")
-
-    await asyncio.to_thread(run_server, MODE, HOST, port, reload=True)
+    app = create_app(debug=True)
+    uvicorn.run(app, host="127.0.0.1", port=port)
     return 0
 
 
 def parse_args(argv: list[str]) -> int:
     parser = argparse.ArgumentParser(
         prog="tcdr",
-        description="The Code Report — zero-config .NET coverage dashboard",
+        description="The Code Dot Report — "
+        + "zero-config .NET coverage dashboard",
         add_help=True,
     )
     parser.add_argument(

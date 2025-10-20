@@ -2,7 +2,7 @@ import json
 import os
 from pathlib import Path
 
-from app.settings import OUT_PREFIX
+from tcdr.app.settings import OUT_PREFIX
 
 
 def generate_dashboard_props() -> Path:

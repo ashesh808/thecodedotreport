@@ -1,4 +1,6 @@
 .vscode
+dist
+tcdr.egg-info
 tcdr/.mypy_cache
 tcdr/.env
 tcdr/venv

@@ -5,17 +5,29 @@ build-backend = "setuptools.build_meta"
 [project]
 name = "tcdr"
 version = "0.0.1"
-requires-python = ">=3.9"
-dependencies = ["jinja2>=3.1", "z8ter>=0.2.5", "z8ter-auth>=0.1"]
+description = "thecode.report — zero-config .NET coverage dashboard powered by Z8ter"
+readme = "README.md"
+requires-python = ">=3.10"
+license = { file = "LICENSE" }
+authors = [{ name = "Ashesh Nepal", email = "nepalashesh8@gmail.com" }]
+
+dependencies = [
+  "jinja2>=3.1,<4",
+  "z8ter[auth]>=0.2.6",
+  "uvicorn[standard]>=0.30,<1.0"
+]
 
 [project.scripts]
 tcdr = "tcdr.cli:main"
+
+[tool.setuptools]
+include-package-data = true
 
 [tool.setuptools.packages.find]
 include = ["tcdr*"]
 
 [tool.setuptools.package-data]
-tcdr = ["templates/**/*.jinja", "templates/**/*.html", "static/**/*"]
+tcdr = ["templates/**/*.jinja", "static/**/*", "content/**"]
 
 [tool.ruff]
 line-length = 79

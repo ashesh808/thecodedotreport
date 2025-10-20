@@ -2,9 +2,9 @@ from z8ter.endpoints.api import API
 from z8ter.requests import Request
 from z8ter.responses import JSONResponse
 
-from app.features.execute_tests import run_all_tests
-from app.features.generate_props import generate_dashboard_props
-from app.responses import create_json_response
+from tcdr.app.features.execute_tests import run_all_tests
+from tcdr.app.features.generate_props import generate_dashboard_props
+from tcdr.app.responses import create_json_response
 
 
 class Tests(API):
