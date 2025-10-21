@@ -3,7 +3,7 @@ from typing import NoReturn, Union
 
 from z8ter.responses import JSONResponse
 
-from app.core import (
+from tcdr.core import (
     RunAllExceptionResult,
     RunAllResult,
 )

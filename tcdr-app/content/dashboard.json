@@ -1,0 +1,665 @@
+{
+  "dashboard_props": {
+    "Test.dll": {
+      "/Users/ashesh808/Desktop/tcdr-test/Test/AbstractClass.cs": {
+        "Test.AbstractClass": {
+          "System.Void Test.AbstractClass::.ctor()": {
+            "Lines": {
+              "7": 4,
+              "8": 4,
+              "9": 4,
+              "10": 4
+            },
+            "Branches": []
+          }
+        },
+        "Test.AbstractClass_SampleImpl1": {
+          "System.Void Test.AbstractClass_SampleImpl1::Method1()": {
+            "Lines": {
+              "26": 0,
+              "27": 0
+            },
+            "Branches": []
+          },
+          "System.Void Test.AbstractClass_SampleImpl1::Method2()": {
+            "Lines": {
+              "31": 0,
+              "32": 0
+            },
+            "Branches": []
+          },
+          "System.Void Test.AbstractClass_SampleImpl1::.ctor()": {
+            "Lines": {
+              "20": 2,
+              "21": 2,
+              "22": 2,
+              "23": 2
+            },
+            "Branches": []
+          }
+        },
+        "Test.AbstractClass_SampleImpl2": {
+          "System.Void Test.AbstractClass_SampleImpl2::Method1()": {
+            "Lines": {
+              "45": 0,
+              "46": 0
+            },
+            "Branches": []
+          },
+          "System.Void Test.AbstractClass_SampleImpl2::Method2()": {
+            "Lines": {
+              "50": 0,
+              "51": 0
+            },
+            "Branches": []
+          },
+          "System.Void Test.AbstractClass_SampleImpl2::.ctor()": {
+            "Lines": {
+              "39": 2,
+              "40": 2,
+              "41": 2,
+              "42": 2
+            },
+            "Branches": []
+          }
+        }
+      },
+      "/Users/ashesh808/Desktop/tcdr-test/Test/AnalyzerTestClass.cs": {
+        "Test.AnalyzerTestClass": {
+          "System.String Test.AnalyzerTestClass::DoSomething(System.String,System.String[],System.Guid,System.Collections.Generic.IEnumerable`1<System.String>,System.Collections.Generic.IList`1<System.String>,System.Decimal,System.Int32,System.Int64,System.Collections.Generic.Dictionary`2<System.String,System.Int32>,System.Int32&,System.Single,System.Double,System.Boolean,System.Byte,System.Char,System.Object,System.SByte,System.Int16,System.UInt32,System.UInt64,System.UInt16)": {
+            "Lines": {
+              "35": 0,
+              "36": 0,
+              "37": 0,
+              "38": 0
+            },
+            "Branches": []
+          },
+          "System.Void Test.AnalyzerTestClass::GenericMethod(T1,T2,System.Int32)": {
+            "Lines": {
+              "41": 0,
+              "42": 0
+            },
+            "Branches": []
+          },
+          "System.String Test.AnalyzerTestClass::get_AutoProperty()": {
+            "Lines": {
+              "44": 0
+            },
+            "Branches": []
+          },
+          "System.Void Test.AnalyzerTestClass::.ctor()": {
+            "Lines": {
+              "8": 0,
+              "9": 0,
+              "10": 0,
+              "11": 0
+            },
+            "Branches": []
+          }
+        }
+      },
+      "/Users/ashesh808/Desktop/tcdr-test/Test/AsyncClass.cs": {
+        "Test.AsyncClass/<SendAsync>d__0": {
+          "System.Void Test.AsyncClass/<SendAsync>d__0::MoveNext()": {
+            "Lines": {
+              "10": 2,
+              "11": 2,
+              "12": 2,
+              "13": 2
+            },
+            "Branches": []
+          }
+        }
+      },
+      "/Users/ashesh808/Desktop/tcdr-test/Test/ClassWithExcludes.cs": {
+        "Test.ClassWithExcludes": {
+          "System.String Test.ClassWithExcludes::get_IncludedProperty()": {
+            "Lines": {
+              "6": 2
+            },
+            "Branches": []
+          },
+          "System.String Test.ClassWithExcludes::get_ExcludedProperty()": {
+            "Lines": {
+              "9": 2
+            },
+            "Branches": []
+          },
+          "System.Void Test.ClassWithExcludes::IncludedMethod()": {
+            "Lines": {
+              "12": 2,
+              "13": 2,
+              "14": 2
+            },
+            "Branches": []
+          },
+          "System.Void Test.ClassWithExcludes::ExcludedMethod()": {
+            "Lines": {
+              "18": 2,
+              "19": 2,
+              "20": 2
+            },
+            "Branches": []
+          }
+        }
+      },
+      "/Users/ashesh808/Desktop/tcdr-test/Test/ClassWithLocalFunctions.cs": {
+        "Test.ClassWithLocalFunctions`1/MyNestedClass`1": {
+          "T2 Test.ClassWithLocalFunctions`1/MyNestedClass`1::get_MyProperty()": {
+            "Lines": {
+              "10": 2
+            },
+            "Branches": []
+          }
+        },
+        "Test.ClassWithLocalFunctions`1/MyNestedClass`1/<>c__DisplayClass4_0`1/<<MyAsyncMethod>g__MyAsyncLocalFunction|0>d`1": {
+          "System.Void Test.ClassWithLocalFunctions`1/MyNestedClass`1/<>c__DisplayClass4_0`1/<<MyAsyncMethod>g__MyAsyncLocalFunction|0>d`1::MoveNext()": {
+            "Lines": {
+              "17": 2,
+              "18": 2,
+              "19": 2,
+              "21": 2,
+              "22": 2
+            },
+            "Branches": []
+          }
+        },
+        "Test.ClassWithLocalFunctions`1/MyNestedClass`1/<MyAsyncMethod>d__4`1": {
+          "System.Void Test.ClassWithLocalFunctions`1/MyNestedClass`1/<MyAsyncMethod>d__4`1::MoveNext()": {
+            "Lines": {
+              "13": 2,
+              "14": 2,
+              "23": 2
+            },
+            "Branches": []
+          }
+        }
+      },
+      "/Users/ashesh808/Desktop/tcdr-test/Test/CodeContract_Contract.cs": {
+        "Test.CodeContract_Contract": {
+          "System.Int32 Test.CodeContract_Contract::Calculate(System.Int32)": {
+            "Lines": {
+              "10": 0,
+              "11": 0,
+              "13": 0,
+              "14": 0
+            },
+            "Branches": []
+          }
+        }
+      },
+      "/Users/ashesh808/Desktop/tcdr-test/Test/CodeContract_Target.cs": {
+        "Test.CodeContract_Target": {
+          "System.Int32 Test.CodeContract_Target::Calculate(System.Int32)": {
+            "Lines": {
+              "7": 4,
+              "8": 4,
+              "9": 2,
+              "10": 2,
+              "13": 2,
+              "14": 2,
+              "16": 4
+            },
+            "Branches": [
+              {
+                "Line": 8,
+                "Offset": 7,
+                "EndOffset": 9,
+                "Path": 0,
+                "Ordinal": 0,
+                "Hits": 2
+              },
+              {
+                "Line": 8,
+                "Offset": 7,
+                "EndOffset": 14,
+                "Path": 1,
+                "Ordinal": 1,
+                "Hits": 2
+              }
+            ]
+          }
+        }
+      },
+      "/Users/ashesh808/Desktop/tcdr-test/Test/GenericAsyncClass.cs": {
+        "Test.GenericAsyncClass`1/<MyAsyncMethod>d__0": {
+          "System.Void Test.GenericAsyncClass`1/<MyAsyncMethod>d__0::MoveNext()": {
+            "Lines": {
+              "10": 2,
+              "11": 2
+            },
+            "Branches": []
+          }
+        }
+      },
+      "/Users/ashesh808/Desktop/tcdr-test/Test/GenericClass.cs": {
+        "Test.AbstractGenericClass`2": {
+          "System.Boolean Test.AbstractGenericClass`2::PostProcess(Test.ISomeObjectInterface`2<TModel,TState>)": {
+            "Lines": {
+              "12": 0,
+              "13": 0,
+              "14": 0
+            },
+            "Branches": []
+          }
+        },
+        "Test.GenericClass`2": {
+          "System.Boolean Test.GenericClass`2::Process(Test.ISomeObjectInterface`2<TModel,TState>)": {
+            "Lines": {
+              "22": 2,
+              "23": 2,
+              "24": 2,
+              "25": 2
+            },
+            "Branches": []
+          },
+          "System.Boolean Test.GenericClass`2::PostProcess(Test.ISomeObjectInterface`2<TModel,TState>)": {
+            "Lines": {
+              "28": 2,
+              "29": 2,
+              "30": 2,
+              "31": 2
+            },
+            "Branches": []
+          }
+        }
+      },
+      "/Users/ashesh808/Desktop/tcdr-test/Test/NotMatchingFileName.cs": {
+        "Test.SomeClass": {
+          "System.String Test.SomeClass::get_Property1()": {
+            "Lines": {
+              "6": 2
+            },
+            "Branches": []
+          }
+        }
+      },
+      "/Users/ashesh808/Desktop/tcdr-test/Test/PartialClass.cs": {
+        "Test.PartialClass": {
+          "System.Void Test.PartialClass::ExecutedMethod_1()": {
+            "Lines": {
+              "8": 2,
+              "9": 2,
+              "10": 2
+            },
+            "Branches": []
+          },
+          "System.Void Test.PartialClass::UnExecutedMethod_1()": {
+            "Lines": {
+              "13": 0,
+              "14": 0,
+              "15": 0
+            },
+            "Branches": []
+          },
+          "System.Int32 Test.PartialClass::get_SomeProperty()": {
+            "Lines": {
+              "21": 0
+            },
+            "Branches": []
+          },
+          "System.Void Test.PartialClass::set_SomeProperty(System.Int32)": {
+            "Lines": {
+              "24": 2,
+              "25": 2,
+              "26": 2,
+              "27": 2,
+              "28": 2,
+              "30": 0,
+              "31": 0,
+              "32": 0,
+              "33": 2
+            },
+            "Branches": [
+              {
+                "Line": 25,
+                "Offset": 7,
+                "EndOffset": 9,
+                "Path": 0,
+                "Ordinal": 0,
+                "Hits": 2
+              },
+              {
+                "Line": 25,
+                "Offset": 7,
+                "EndOffset": 20,
+                "Path": 1,
+                "Ordinal": 1,
+                "Hits": 0
+              }
+            ]
+          }
+        }
+      },
+      "/Users/ashesh808/Desktop/tcdr-test/Test/PartialClass2.cs": {
+        "Test.PartialClass": {
+          "System.Void Test.PartialClass::ExecutedMethod_2()": {
+            "Lines": {
+              "8": 2,
+              "9": 2,
+              "10": 2
+            },
+            "Branches": []
+          },
+          "System.Void Test.PartialClass::UnExecutedMethod_2()": {
+            "Lines": {
+              "13": 0,
+              "14": 0,
+              "15": 0
+            },
+            "Branches": []
+          }
+        }
+      },
+      "/Users/ashesh808/Desktop/tcdr-test/Test/PartialClassWithAutoProperties.cs": {
+        "Test.PartialClassWithAutoProperties": {
+          "System.String Test.PartialClassWithAutoProperties::get_Property1()": {
+            "Lines": {
+              "6": 2
+            },
+            "Branches": []
+          }
+        }
+      },
+      "/Users/ashesh808/Desktop/tcdr-test/Test/PartialClassWithAutoProperties2.cs": {
+        "Test.PartialClassWithAutoProperties": {
+          "System.String Test.PartialClassWithAutoProperties::get_Property2()": {
+            "Lines": {
+              "6": 2
+            },
+            "Branches": []
+          },
+          "System.String Test.PartialClassWithAutoProperties::get_ExpressionBodiedProperty()": {
+            "Lines": {
+              "8": 0
+            },
+            "Branches": []
+          }
+        }
+      },
+      "/Users/ashesh808/Desktop/tcdr-test/Test/Program.cs": {
+        "Test.Program": {
+          "System.Void Test.Program::Main(System.String[])": {
+            "Lines": {
+              "10": 2,
+              "11": 2,
+              "12": 2,
+              "13": 2,
+              "15": 2,
+              "16": 2,
+              "18": 2,
+              "19": 2,
+              "20": 2,
+              "22": 2,
+              "23": 2,
+              "25": 2,
+              "27": 2,
+              "28": 2,
+              "30": 2,
+              "31": 2,
+              "33": 2,
+              "35": 2,
+              "36": 2,
+              "38": 2,
+              "41": 2,
+              "42": 2,
+              "43": 2,
+              "44": 0,
+              "45": 0,
+              "46": 0,
+              "48": 2,
+              "49": 2,
+              "50": 2
+            },
+            "Branches": []
+          }
+        },
+        "Test.Program/EchoHandler": {
+          "System.Threading.Tasks.Task`1<System.Net.Http.HttpResponseMessage> Test.Program/EchoHandler::SendAsync(System.Net.Http.HttpRequestMessage,System.Threading.CancellationToken)": {
+            "Lines": {
+              "70": 2,
+              "71": 2,
+              "72": 2
+            },
+            "Branches": []
+          },
+          "System.Void Test.Program/EchoHandler::.ctor(System.Net.Http.HttpResponseMessage)": {
+            "Lines": {
+              "64": 2,
+              "65": 2,
+              "66": 2,
+              "67": 2
+            },
+            "Branches": []
+          }
+        },
+        "Test.Program/<CallAsyncMethod>d__1": {
+          "System.Void Test.Program/<CallAsyncMethod>d__1::MoveNext()": {
+            "Lines": {
+              "53": 2,
+              "54": 2,
+              "55": 2,
+              "56": 2,
+              "57": 2,
+              "58": 2
+            },
+            "Branches": []
+          }
+        }
+      },
+      "/Users/ashesh808/Desktop/tcdr-test/Test/TestClass.cs": {
+        "Test.TestClass": {
+          "System.Void Test.TestClass::SampleFunction()": {
+            "Lines": {
+              "9": 2,
+              "10": 2,
+              "11": 2,
+              "12": 2,
+              "13": 2,
+              "15": 2,
+              "16": 2,
+              "18": 2,
+              "19": 2,
+              "20": 2,
+              "21": 2,
+              "23": 0,
+              "24": 0,
+              "25": 0,
+              "26": 2
+            },
+            "Branches": [
+              {
+                "Line": 18,
+                "Offset": 34,
+                "EndOffset": 36,
+                "Path": 0,
+                "Ordinal": 0,
+                "Hits": 0
+              },
+              {
+                "Line": 18,
+                "Offset": 34,
+                "EndOffset": 42,
+                "Path": 1,
+                "Ordinal": 1,
+                "Hits": 2
+              },
+              {
+                "Line": 18,
+                "Offset": 45,
+                "EndOffset": 47,
+                "Path": 0,
+                "Ordinal": 2,
+                "Hits": 2
+              },
+              {
+                "Line": 18,
+                "Offset": 45,
+                "EndOffset": 74,
+                "Path": 1,
+                "Ordinal": 3,
+                "Hits": 0
+              }
+            ]
+          },
+          "System.Void Test.TestClass::ParentMethod()": {
+            "Lines": {
+              "29": 2,
+              "30": 2,
+              "32": 2,
+              "38": 2
+            },
+            "Branches": []
+          },
+          "System.Void Test.TestClass::MethodWithLambda()": {
+            "Lines": {
+              "41": 2,
+              "42": 8,
+              "44": 8,
+              "46": 2,
+              "47": 2
+            },
+            "Branches": []
+          },
+          "System.String Test.TestClass::<ParentMethod>g__NestedLocalFunction|1_0(System.String)": {
+            "Lines": {
+              "35": 2,
+              "36": 2,
+              "37": 2
+            },
+            "Branches": []
+          }
+        },
+        "Test.TestClass/NestedClass": {
+          "System.Void Test.TestClass/NestedClass::SampleFunction()": {
+            "Lines": {
+              "52": 0,
+              "53": 0,
+              "54": 0,
+              "55": 0,
+              "56": 0,
+              "57": 0
+            },
+            "Branches": []
+          }
+        }
+      },
+      "/Users/ashesh808/Desktop/tcdr-test/Test/TestClass2.cs": {
+        "Test.TestClass2": {
+          "System.String Test.TestClass2::get_ExecutedProperty()": {
+            "Lines": {
+              "13": 6
+            },
+            "Branches": []
+          },
+          "System.String Test.TestClass2::get_UnExecutedProperty()": {
+            "Lines": {
+              "15": 0
+            },
+            "Branches": []
+          },
+          "System.Void Test.TestClass2::ExecutedMethod()": {
+            "Lines": {
+              "30": 2,
+              "31": 2,
+              "32": 2,
+              "33": 2
+            },
+            "Branches": []
+          },
+          "System.Void Test.TestClass2::UnExecutedMethod()": {
+            "Lines": {
+              "36": 0,
+              "37": 0,
+              "38": 0,
+              "39": 0
+            },
+            "Branches": []
+          },
+          "System.Void Test.TestClass2::SampleFunction(System.String)": {
+            "Lines": {
+              "42": 2,
+              "43": 2,
+              "45": 10,
+              "47": 22,
+              "48": 8,
+              "49": 8,
+              "50": 8,
+              "52": 2,
+              "54": 8,
+              "55": 2,
+              "56": 2,
+              "57": 2,
+              "58": 2
+            },
+            "Branches": [
+              {
+                "Line": 47,
+                "Offset": 107,
+                "EndOffset": 81,
+                "Path": 1,
+                "Ordinal": 1,
+                "Hits": 8
+              },
+              {
+                "Line": 47,
+                "Offset": 107,
+                "EndOffset": 109,
+                "Path": 0,
+                "Ordinal": 0,
+                "Hits": 2
+              },
+              {
+                "Line": 54,
+                "Offset": 180,
+                "EndOffset": 182,
+                "Path": 0,
+                "Ordinal": 2,
+                "Hits": 2
+              },
+              {
+                "Line": 54,
+                "Offset": 180,
+                "EndOffset": 206,
+                "Path": 1,
+                "Ordinal": 3,
+                "Hits": 2
+              }
+            ]
+          },
+          "System.String Test.TestClass2::DoSomething(System.String,System.String[],System.Guid,System.Collections.Generic.IEnumerable`1<System.String>,System.Collections.Generic.IList`1<System.String>,System.Decimal,System.Int32,System.Collections.Generic.Dictionary`2<System.String,System.Int32>,System.Int32&,System.Single,System.Double,System.Boolean,System.Byte,System.Char,System.Object,System.SByte,System.Int16,System.UInt32,System.UInt64,System.UInt16)": {
+            "Lines": {
+              "80": 0,
+              "81": 0,
+              "82": 0,
+              "83": 0
+            },
+            "Branches": []
+          },
+          "System.Void Test.TestClass2::.ctor()": {
+            "Lines": {
+              "11": 4,
+              "17": 0,
+              "18": 0,
+              "19": 0,
+              "20": 0,
+              "21": 0
+            },
+            "Branches": []
+          },
+          "System.Void Test.TestClass2::.ctor(System.String)": {
+            "Lines": {
+              "23": 4,
+              "24": 4,
+              "25": 4,
+              "26": 4,
+              "27": 4
+            },
+            "Branches": []
+          }
+        }
+      }
+    }
+  }
+}

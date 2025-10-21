@@ -1,10 +1,9 @@
 .vscode
+venv
 dist
 tcdr.egg-info
 tcdr/.mypy_cache
 tcdr/.env
-tcdr/venv
-tcdr/dist
 __pycache__/
 tcdr/*.py[cod]
 tcdr/.DS_Store

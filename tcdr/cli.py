@@ -1,19 +1,45 @@
 import argparse
 import asyncio
 import json
+import os
+import shutil
 import sys
 from dataclasses import asdict
 from pathlib import Path
 
-import uvicorn
-
-from tcdr.app.features.execute_tests import run_all_tests
-from tcdr.app.features.generate_props import generate_dashboard_props
-from tcdr.app.web import create_app
+from tcdr.features.execute_tests import run_all_tests
+from tcdr.features.generate_props import generate_dashboard_props
 
 MODE = "dev"
 HOST = "127.0.0.1"
-DEFAULT_PORT = 8080
+DEFAULT_PORT = 8787
+
+
+def run_server():
+    app_dir = (Path.cwd() / ".tcdr" / "tcdr-app").resolve()
+    if not app_dir.is_dir():
+        print(
+            f"tcdr-app/: not found at {app_dir.parent}. "
+            + "Run this from your project root.",
+            file=sys.stderr,
+        )
+        raise SystemExit(2)
+
+    os.environ["Z8TER_APP_DIR"] = str(app_dir)
+    os.chdir(app_dir)
+    z8_path = shutil.which("z8")
+    if z8_path:
+        cmd = ["z8", "run", "dev"]
+        os.execvp(cmd[0], cmd)
+    else:
+        cmd = [
+            sys.executable,
+            "-m",
+            "z8ter.cli.main",
+            "run",
+            "dev",
+        ]
+        os.execv(cmd[0], cmd)
 
 
 async def run_tcdr(port: int) -> int:
@@ -29,8 +55,7 @@ async def run_tcdr(port: int) -> int:
 
     content_path: Path = generate_dashboard_props()
     print(f"Dashboard props generated at: {content_path}")
-    app = create_app(debug=True)
-    uvicorn.run(app, host="127.0.0.1", port=port)
+    run_server()
     return 0
 
 
