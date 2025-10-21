@@ -1,0 +1,8 @@
+{% extends "base.jinja" %}
+{% block content %}
+  <tcr-dashboard>
+    <script type="application/json">
+      {{ page_content.dashboard_props | tojson }}
+    </script>
+  </tcr-dashboard>
+{% endblock %}

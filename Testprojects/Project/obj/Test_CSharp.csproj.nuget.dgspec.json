@@ -1,0 +1,50 @@
+{
+  "format": 1,
+  "restore": {
+    "/Users/ashesh808/Documents/Projects/thecodedotreport/Testprojects/Project/Test_CSharp.csproj": {}
+  },
+  "projects": {
+    "/Users/ashesh808/Documents/Projects/thecodedotreport/Testprojects/Project/Test_CSharp.csproj": {
+      "version": "1.0.0",
+      "restore": {
+        "projectUniqueName": "/Users/ashesh808/Documents/Projects/thecodedotreport/Testprojects/Project/Test_CSharp.csproj",
+        "projectName": "Test",
+        "projectPath": "/Users/ashesh808/Documents/Projects/thecodedotreport/Testprojects/Project/Test_CSharp.csproj",
+        "packagesPath": "/Users/ashesh808/.nuget/packages/",
+        "outputPath": "/Users/ashesh808/Documents/Projects/thecodedotreport/Testprojects/Project/obj/",
+        "projectStyle": "PackageReference",
+        "skipContentFileWrite": true,
+        "UsingMicrosoftNETSdk": false,
+        "configFilePaths": [
+          "/Users/ashesh808/.nuget/NuGet/NuGet.Config"
+        ],
+        "originalTargetFrameworks": [
+          "net45"
+        ],
+        "sources": {
+          "https://api.nuget.org/v3/index.json": {}
+        },
+        "frameworks": {
+          "net45": {
+            "projectReferences": {}
+          }
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
+        }
+      },
+      "frameworks": {
+        "net45": {
+          "dependencies": {
+            "ICSharpCode.NRefactory": {
+              "target": "Package",
+              "version": "[5.5.1, )"
+            }
+          }
+        }
+      }
+    }
+  }
+}

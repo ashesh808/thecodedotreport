@@ -3,12 +3,12 @@ venv
 dist
 tcdr.egg-info
 tcdr/.mypy_cache
-tcdr/.env
+tcdr-app/.env
 __pycache__/
 tcdr/*.py[cod]
 tcdr/.DS_Store
 tcdr/z8ter.egg-info
-tcdr/node_modules
-tcdr/static/css/output.css
-tcdr/static/js/pages/**/*.js
+tcdr-app/node_modules
+tcdr-app/static/css/output.css
+tcdr-app/static/js/pages/**/*.js
 .env

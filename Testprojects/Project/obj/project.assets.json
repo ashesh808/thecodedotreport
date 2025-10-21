@@ -1,0 +1,151 @@
+{
+  "version": 3,
+  "targets": {
+    ".NETFramework,Version=v4.5": {
+      "ICSharpCode.NRefactory/5.5.1": {
+        "type": "package",
+        "dependencies": {
+          "Mono.Cecil": "0.9.5.4"
+        },
+        "compile": {
+          "lib/Net40/ICSharpCode.NRefactory.CSharp.dll": {
+            "related": ".xml"
+          },
+          "lib/Net40/ICSharpCode.NRefactory.Cecil.dll": {
+            "related": ".xml"
+          },
+          "lib/Net40/ICSharpCode.NRefactory.Xml.dll": {
+            "related": ".xml"
+          },
+          "lib/Net40/ICSharpCode.NRefactory.dll": {
+            "related": ".Cecil.xml;.CSharp.xml;.xml;.Xml.xml"
+          }
+        },
+        "runtime": {
+          "lib/Net40/ICSharpCode.NRefactory.CSharp.dll": {
+            "related": ".xml"
+          },
+          "lib/Net40/ICSharpCode.NRefactory.Cecil.dll": {
+            "related": ".xml"
+          },
+          "lib/Net40/ICSharpCode.NRefactory.Xml.dll": {
+            "related": ".xml"
+          },
+          "lib/Net40/ICSharpCode.NRefactory.dll": {
+            "related": ".Cecil.xml;.CSharp.xml;.xml;.Xml.xml"
+          }
+        }
+      },
+      "Mono.Cecil/0.9.5.4": {
+        "type": "package",
+        "compile": {
+          "lib/net40/Mono.Cecil.Mdb.dll": {},
+          "lib/net40/Mono.Cecil.Pdb.dll": {},
+          "lib/net40/Mono.Cecil.Rocks.dll": {},
+          "lib/net40/Mono.Cecil.dll": {}
+        },
+        "runtime": {
+          "lib/net40/Mono.Cecil.Mdb.dll": {},
+          "lib/net40/Mono.Cecil.Pdb.dll": {},
+          "lib/net40/Mono.Cecil.Rocks.dll": {},
+          "lib/net40/Mono.Cecil.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "ICSharpCode.NRefactory/5.5.1": {
+      "sha512": "iFnWweJykC6nHF535Qv1gYMseEWcM8/CvBMDxZWlg4ExafRg5uJm5R30GufpbzSYrxg3ry7RJ4Pnw6ghKmuqfg==",
+      "type": "package",
+      "path": "icsharpcode.nrefactory/5.5.1",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "icsharpcode.nrefactory.5.5.1.nupkg.sha512",
+        "icsharpcode.nrefactory.nuspec",
+        "lib/Net40/ICSharpCode.NRefactory.CSharp.dll",
+        "lib/Net40/ICSharpCode.NRefactory.CSharp.xml",
+        "lib/Net40/ICSharpCode.NRefactory.Cecil.dll",
+        "lib/Net40/ICSharpCode.NRefactory.Cecil.xml",
+        "lib/Net40/ICSharpCode.NRefactory.Xml.dll",
+        "lib/Net40/ICSharpCode.NRefactory.Xml.xml",
+        "lib/Net40/ICSharpCode.NRefactory.dll",
+        "lib/Net40/ICSharpCode.NRefactory.xml"
+      ]
+    },
+    "Mono.Cecil/0.9.5.4": {
+      "sha512": "lSrFKGdaagNNm+GSDbHnYo3m31ceBk2PsszYdXFmphfTqB1fnX8lMEasSC6dYzHfiM+3PaMXEMFqgMJYFv1I8A==",
+      "type": "package",
+      "path": "mono.cecil/0.9.5.4",
+      "files": [
+        ".nupkg.metadata",
+        ".signature.p7s",
+        "lib/net20/Mono.Cecil.Mdb.dll",
+        "lib/net20/Mono.Cecil.Pdb.dll",
+        "lib/net20/Mono.Cecil.dll",
+        "lib/net35/Mono.Cecil.Mdb.dll",
+        "lib/net35/Mono.Cecil.Pdb.dll",
+        "lib/net35/Mono.Cecil.Rocks.dll",
+        "lib/net35/Mono.Cecil.dll",
+        "lib/net40/Mono.Cecil.Mdb.dll",
+        "lib/net40/Mono.Cecil.Pdb.dll",
+        "lib/net40/Mono.Cecil.Rocks.dll",
+        "lib/net40/Mono.Cecil.dll",
+        "lib/sl40/Mono.Cecil.Rocks.dll",
+        "lib/sl40/Mono.Cecil.dll",
+        "mono.cecil.0.9.5.4.nupkg.sha512",
+        "mono.cecil.nuspec"
+      ]
+    }
+  },
+  "projectFileDependencyGroups": {
+    ".NETFramework,Version=v4.5": [
+      "ICSharpCode.NRefactory >= 5.5.1"
+    ]
+  },
+  "packageFolders": {
+    "/Users/ashesh808/.nuget/packages/": {}
+  },
+  "project": {
+    "version": "1.0.0",
+    "restore": {
+      "projectUniqueName": "/Users/ashesh808/Documents/Projects/thecodedotreport/Testprojects/Project/Test_CSharp.csproj",
+      "projectName": "Test",
+      "projectPath": "/Users/ashesh808/Documents/Projects/thecodedotreport/Testprojects/Project/Test_CSharp.csproj",
+      "packagesPath": "/Users/ashesh808/.nuget/packages/",
+      "outputPath": "/Users/ashesh808/Documents/Projects/thecodedotreport/Testprojects/Project/obj/",
+      "projectStyle": "PackageReference",
+      "skipContentFileWrite": true,
+      "UsingMicrosoftNETSdk": false,
+      "configFilePaths": [
+        "/Users/ashesh808/.nuget/NuGet/NuGet.Config"
+      ],
+      "originalTargetFrameworks": [
+        "net45"
+      ],
+      "sources": {
+        "https://api.nuget.org/v3/index.json": {}
+      },
+      "frameworks": {
+        "net45": {
+          "projectReferences": {}
+        }
+      },
+      "restoreAuditProperties": {
+        "enableAudit": "true",
+        "auditLevel": "low",
+        "auditMode": "direct"
+      }
+    },
+    "frameworks": {
+      "net45": {
+        "dependencies": {
+          "ICSharpCode.NRefactory": {
+            "target": "Package",
+            "version": "[5.5.1, )"
+          }
+        }
+      }
+    }
+  }
+}

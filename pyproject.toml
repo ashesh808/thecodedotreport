@@ -20,14 +20,21 @@ dependencies = [
 [project.scripts]
 tcdr = "tcdr.cli:main"
 
-[tool.setuptools]
-include-package-data = true
+[project.urls]
+Homepage = "https://github.com/ashesh808/thecodedotreport"
+Issues = "https://github.com/ashesh808/thecodedotreport/issues"
 
 [tool.setuptools.packages.find]
 include = ["tcdr*"]
 
 [tool.setuptools.package-data]
-tcdr = ["templates/**/*.jinja", "static/**/*", "content/**"]
+tcdr = [
+  "scaffold/**/*",
+  "scaffold/**/.vite/**/*",
+]
+
+[tool.setuptools]
+include-package-data = true
 
 [tool.ruff]
 line-length = 79

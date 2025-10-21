@@ -9,6 +9,7 @@ from pathlib import Path
 
 from tcdr.features.execute_tests import run_all_tests
 from tcdr.features.generate_props import generate_dashboard_props
+from tcdr.features.scaffold_tcdr_app import RC_OK, new_app
 
 MODE = "dev"
 HOST = "127.0.0.1"
@@ -48,7 +49,9 @@ async def run_tcdr(port: int) -> int:
     Returns exit code.
     """
     res = await run_all_tests()
-
+    created = new_app(".tcdr/tcdr-app")
+    if created is RC_OK:
+        print("✅ tcdr-app created...")
     if not res.ok:
         print("There was an error in executing the tests, see details below:")
         print(json.dumps(asdict(res), indent=2))

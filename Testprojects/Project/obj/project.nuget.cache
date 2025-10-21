@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "dgSpecHash": "QGFjSNXU9Uo=",
+  "success": true,
+  "projectFilePath": "/Users/ashesh808/Documents/Projects/thecodedotreport/Testprojects/Project/Test_CSharp.csproj",
+  "expectedPackageFiles": [
+    "/Users/ashesh808/.nuget/packages/icsharpcode.nrefactory/5.5.1/icsharpcode.nrefactory.5.5.1.nupkg.sha512",
+    "/Users/ashesh808/.nuget/packages/mono.cecil/0.9.5.4/mono.cecil.0.9.5.4.nupkg.sha512"
+  ],
+  "logs": []
+}
