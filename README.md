@@ -1,28 +1,63 @@
 ### **thecode.report**
 
+> **thecode.report** is in its initial release and may contain unexpected bugs or incomplete features.
+
+**thecode.report** is a lightweight, Python-based tool that automatically collects, parses, and visualizes **.NET code coverage results using coverlet**.
+
+It spins up a **live local dashboard** (via `tcdr --serve`) where developers can instantly explore coverage data, identify testing gaps, and export pdf reports for sharing coverage summaries.
+
+![Coverage Dashboard](examples/dashboard.png)
+
 ---
 
-> 🛠️ thecode.report is currently in active development please check back soon for updates.
+#### Setup
 
-th
-**thecode.report** is a lightweight Python-based tool that automatically collects, parses, and visualizes **.NET code coverage results** — no project configuration required.
+1. **Install prerequisites**
 
-It spins up a live local dashboard (via `tdcr --serve`) where developers can instantly explore coverage data, track trends, and export professional-grade reports.
+   - Make sure [Python](https://www.python.org/downloads/) is installed (3.9 or later).
+   - Install [pipx](https://pypa.github.io/pipx/) for isolated tool environments:
+     ```bash
+     python3 -m pip install --user pipx
+     python3 -m pipx ensurepath
+     ```
 
-![alt text](examples/dashboard.png)
+2. **Install thecode.report**
 
-#### Features
+   ```bash
+   pipx install tcdr
+   ```
 
-- **Zero-config setup** — works with any .NET project
-- **Live dashboard** — run `tcr --serve` and view results in your browser
-- **Beautiful UI** — modern coverage overview with trends, hotspots, and detailed breakdowns
-- **Export ready** — one-click PDF export for sharing reports
+3. **Run in your .NET project**
+   In the root of your solution (where your unit test project resides):
 
-#### 🧠 Example
+   ```bash
+   tcdr --serve
+   ```
 
-```bash
-pip install thecodereport
-tcdr --serve
-```
+   Then open [**http://localhost:8080**](http://localhost:8080) to explore your coverage dashboard.
 
-Then open **[http://localhost:8080](http://localhost:8080)** to view your coverage dashboard.
+4. **Requirements**
+   `tcdr` works with any .NET project that has [`coverlet.msbuild`](https://www.nuget.org/packages/coverlet.msbuild) installed.
+   The tool automatically runs Coverlet under the hood, generates the coverage JSON file, and visualizes it in a live dashboard.
+
+---
+
+#### 🧠 How It Works
+
+1. **Runs Coverlet under the hood** — `tcdr --serve` executes a standard MSBuild command using `coverlet.msbuild` to generate a JSON coverage report.
+2. **Processes and enhances data** — TCDR reads the coverage output, adds its own properties, and structures it for the dashboard.
+3. **Builds a Z8ter-powered app** — The processed report is moved into a `.tcdr/tcdr-app` folder as `content/dashboard.json`.
+4. **Renders via Z8ter** — Z8ter serves this file as props to a React-based dashboard component.
+
+The use of **[Z8ter](https://z8ter.dev)** is what makes this workflow unique:
+
+- It enables **server-driven UI rendering** without needing to build a separate API.
+- It provides **component-level hydration control**, allowing dynamic updates with minimal client overhead.
+
+This approach gives thecode.report the speed of a static report generator with the fluid interactivity of a live web app.
+
+---
+
+#### Credits
+
+[**ReportGenerator**](https://reportgenerator.io/) for the test project and inspiration for validating coverage workflows.
