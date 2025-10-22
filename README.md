@@ -42,19 +42,12 @@ It spins up a **live local dashboard** (via `tcdr --serve`) where developers can
 
 ---
 
-#### 🧠 How It Works
+#### How It Works
 
 1. **Runs Coverlet under the hood** — `tcdr --serve` executes a standard MSBuild command using `coverlet.msbuild` to generate a JSON coverage report.
 2. **Processes and enhances data** — TCDR reads the coverage output, adds its own properties, and structures it for the dashboard.
 3. **Builds a Z8ter-powered app** — The processed report is moved into a `.tcdr/tcdr-app` folder as `content/dashboard.json`.
 4. **Renders via Z8ter** — Z8ter serves this file as props to a React-based dashboard component.
-
-The use of **[Z8ter](https://z8ter.dev)** is what makes this workflow unique:
-
-- It enables **server-driven UI rendering** without needing to build a separate API.
-- It provides **component-level hydration control**, allowing dynamic updates with minimal client overhead.
-
-This approach gives thecode.report the speed of a static report generator with the fluid interactivity of a live web app.
 
 ---
 
