@@ -60,4 +60,4 @@ This approach gives thecode.report the speed of a static report generator with t
 
 #### Credits
 
-[**ReportGenerator**](https://reportgenerator.io/) for the test project and inspiration for validating coverage workflows.
+[**ReportGenerator**](https://reportgenerator.io/) for the test project.
